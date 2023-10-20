@@ -1,0 +1,27 @@
+*{
+    margin:0;
+    padding:0;
+  
+}
+.videocls{
+    width:100vw;
+    height:70%;
+    position:relative;
+}
+.videocls video{
+ width:100%;
+ height:70%;
+ object-fit:cover;   
+}
+.content1{
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    font-weight: 100;
+}
