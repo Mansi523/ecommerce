@@ -3,6 +3,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
+    flex-direction:column;
 }
 .devider{
     color:black;
@@ -27,3 +28,4 @@
     align-items:center;
     justify-content:center;  
 }
+

@@ -54,7 +54,7 @@ function a11yProps(index) {
   return (
     <div className={style.container}>
     <Box sx={{ width: '43%' }}>
-      <Box style={{}} sx={{ borderBottom: 1, borderColor: 'divider'}}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example"
         className={style.tableLoginReg}  >
           <Tab className={style.tableLoginRegtab} label="LOGIN" {...a11yProps(0)} />
@@ -66,13 +66,15 @@ function a11yProps(index) {
        <Login/>
        </div>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel className={style.check} value={value} index={1}>
       <div className={style.signin}>
       <SignUp/>
       </div>
       </CustomTabPanel>
    
+
     </Box>
+
     </div>
   );
 }

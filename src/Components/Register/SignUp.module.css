@@ -70,24 +70,3 @@
     width:550px;
     border-radius:4px;
 }
-.fotterSignup{
-    text-align:center;
-    padding:10px;
-}
-
-
-.fotterSignupIcon{
-    font-size:2rem;
-    color:#000;
-}
-
-.fotterSignups{
-    font-size:0.6rem!important;
-    color: #8b8b8b !important;
-    font-weight:500px !important;; 
-}
-.fotterSignUpp{
-    font-size:0.6rem!important;
-    color:#222 !important;
-    font-weight:400 !important;  
-}

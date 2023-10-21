@@ -13,7 +13,7 @@ import logo from '../../Assets/logo.png';
 
 const Navbar = () => {
   let {currentuser} = useContext(UserContext);
-  console.log("currentuser",currentuser);
+  console.log("CURRENTUSER",currentuser);
   let navigate = useNavigate();
   return (
     <>
