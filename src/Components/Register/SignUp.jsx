@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../../Context/MyContext";
 import GoogleLogin from "./GoogleLogin";
 const SignUp = () => {
-  let { name, email, password, setEmail, setName, setPassword, handleSubmitSignup } = useContext(UserContext);
+  let { name, email, password, setEmail, setName, setPassword, handleSubmitSignup,loader } = useContext(UserContext);
 
   return (
     <>

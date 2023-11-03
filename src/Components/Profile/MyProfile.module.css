@@ -1,0 +1,95 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Great+Vibes&family=Inconsolata:wght@300&family=Roboto:ital,wght@0,300;0,400;1,700;1,900&family=Satisfy&display=swap');
+
+.namefield{
+    display:flex;
+    flex-direction:column;
+}
+.namefield span{
+margin-bottom:10px;
+margin-top:10px;
+}
+.namefield input{
+    width:90%;
+    padding:10px;
+    border-radius:8px;
+    color:grey;
+    outline:none; 
+    border: 1px solid grey;
+}
+.namefield input:hover{
+   border:2px solid black;
+   border-radius:8px;
+}
+.birthday{
+    display:flex;
+    flex-direction:column;
+}
+.birthday span{
+margin-bottom:10px;
+margin-top:10px;
+}
+.birthday input{
+    width:90%;
+    padding:10px;
+    border-radius:8px;
+    color:grey;
+    outline:none; 
+    border: 1px solid grey;
+}
+.birthday input:hover{
+   border:2px solid black;
+   border-radius:8px;
+}
+.gender p{
+margin-bottom:10px;
+margin-top:30px; 
+}
+.gender p input{
+  padding:20px;
+}
+.inputgender{
+    margin:10px;
+}
+.categoryPreferences{
+    display:flex;
+    flex-direction:column;
+}
+.categories{
+    display:flex;
+    flex-direction:row; 
+    justify-content:space-around; 
+    width:80%; 
+}
+.categoryPreferences span{
+    margin:30px;
+}
+.partiularcat{
+    border:1px solid grey;
+    padding:5px;
+    border-radius:5px;
+}
+.confirm{
+  width:100px;
+  margin:30px;
+  padding:10px;
+  font-size:1rem;
+  border-radius:5px;
+  background-color:black;
+  color:#fff;
+  border:none;
+}
+.verify{
+    width:80%;
+    background-color:hsla(0,0%,59%,.1);
+    /* font-family: 'Bodoni Moda', serif; */
+/* font-family: 'Great Vibes', cursive; */
+/* font-family: 'Inconsolata', monospace; */
+font-family: 'Roboto', sans-serif;
+
+}
+.phone{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+}

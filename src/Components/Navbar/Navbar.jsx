@@ -32,7 +32,9 @@ const Navbar = () => {
      </div>
      <div className={style.navRight}>
      <div className={style.icons}><CiSearch fontSize={20}/></div>
-     <Link to='/authenticate'><div className={style.icons}><CiUser fontSize={20}/></div></Link>
+    { !currentuser?<Link to='/authenticate'><div className={style.icons}><CiUser fontSize={20}/></div></Link>
+     :<Link to='/userprofile'><div className={style.icons}><CiUser fontSize={20}/></div></Link>
+    }
      <div className={style.icons}><PiBagLight fontSize={20}/></div>
      <div className={style.icons}><TfiHelpAlt fontSize={17}/></div>    
     </div>   

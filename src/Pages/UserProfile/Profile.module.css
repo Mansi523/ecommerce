@@ -1,0 +1,24 @@
+.userProfile{
+  display:flex;
+  /* justify-content:left; */
+  /* align-items:center; */
+
+}
+.left{
+  
+    flex:2;
+}
+.right{
+
+    flex:7;
+}
+.Up{
+    display: flex;
+    padding:10px;
+}
+.upLeft{
+    flex:20%;
+}
+.upRight{
+    flex:80%;
+}
