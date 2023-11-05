@@ -42,7 +42,7 @@
     border-radius:6px;
     margin-top:40px;
 }
-.modal, .overlay{
+.modal,.overlay{
     width:100vw;
     height:100vh;
     top:0;
@@ -63,7 +63,7 @@
     padding:14px 28px;
     border-radius:6px;
     max-width:1000px;
-    min-width:1000px;
+    min-width:850px;
     box-sizing:border-box;
 }
 .closeModal{
@@ -106,15 +106,18 @@ padding:10px;
    outline:none;
    border:none;
    /* border-left:none; */
-   border:2px solid grey;
-   border-radius:20px;
+   border: 1px solid rgb(209, 209, 209);
+   border-radius:10px;
+}
+.formdata>div>input:hover{
+ border:0.5px solid black;
 }
 .formdata>div>label{
     position:absolute;
     top:0px;
     line-height:40px;
     font-size:0.8rem;
-    color:grey;
+    color:#999;
     left:10px;
     pointer-events: none;
     transition:0.15s;
@@ -122,21 +125,24 @@ padding:10px;
 .formdata>div>input:focus + label{
    line-height:15px;
    font-size:10px;
-   color:grey;
+   color:#999;
    font-weight:bold;
 }
 .formdata>div>input:not(:placeholder-shown)+label{
     line-height:15px;
     font-size:10px;
-    color:rgb(221, 221, 221);
+    color:#999;
     font-weight:bold;
+}
+.formcontact{
+    width:200px!important;
 }
 .contactinfo{
   display:flex;
 
 }
 .num{
-    margin-top:30px;
+    margin-top:32px;
     /* height:40px; */
     text-align:center;
     /* padding:10px; */
@@ -144,8 +150,16 @@ padding:10px;
 .num span{
     background-color:rgba(243, 241, 241, 0.85);
     border-radius:7px;
-    padding:10px;
+    padding:13px;
 }
+.addressinput1{
+    width:300px!important;
+}
+.addressinput2{
+    width:200px!important;
+
+}
+
 .addresspan{
     font-size:1rem;
     padding:10px;   
@@ -157,12 +171,16 @@ padding:10px;
     display:flex;
 }
 .btnsave{
-    width:70%;
+    width:67%;
     background-color:black;
     color:#fff;
     border-radius:6px;
-    padding:5px;
+    padding:10px;
     outline:none;
-    font-size:1rem;
+    font-size:0.8rem;
     text-align:center;
+}
+.centerbtn{
+    text-align: center;
+    margin:30px;
 }

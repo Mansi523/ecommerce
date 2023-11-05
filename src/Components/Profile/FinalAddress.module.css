@@ -38,7 +38,13 @@
     font-size:0.8rem;
     font-weight: 100px !important;;
     font-family: URMacan, -apple-system, blinkmacsystemfont, "Helvetica Neue", helvetica, segoe ui, arial, roboto, "PingFang SC", "miui", "Hiragino Sans GB", "Microsoft Yahei", sans-serif !important;
+    display:flex;
+    flex-direction:row;
 }
 .radiobtn{
-    padding:50px;
+   margin:10px;
+}
+.icon{
+    margin:10px;
+
 }

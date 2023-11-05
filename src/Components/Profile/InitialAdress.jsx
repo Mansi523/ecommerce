@@ -44,6 +44,7 @@ const toggleModal = () =>{
             <form className={style.formdata}>
               <div>
               <input
+              className={style.formcontact}
   placeholder=" "
   type="text"
   id="firstname"
@@ -63,6 +64,7 @@ const toggleModal = () =>{
             <form className={style.formdata}>
               <div className="div">
               <input
+                 className={style.formcontact}
   placeholder=" "
   type="text"
   id="firstname"
@@ -81,6 +83,7 @@ const toggleModal = () =>{
             <form className={style.formdata}>
               <div className="div">
               <input
+                 className={style.formcontact}
   placeholder=" "
   type="text"
   id="firstname"
@@ -104,6 +107,7 @@ const toggleModal = () =>{
             <form className={style.formdata}>
               <div className="div">
               <input
+              className={style.addressinput1}
   placeholder=" "
   type="text"
   id="firstname"
@@ -122,6 +126,7 @@ const toggleModal = () =>{
             <form className={style.formdata}>
               <div className="div">
               <input
+        className={style.addressinput1}
   placeholder=" "
   type="text"
   id="firstname"
@@ -142,6 +147,7 @@ const toggleModal = () =>{
             <form className={style.formdata}>
               <div className="div">
               <input
+   className={style.addressinput2}
   placeholder=" "
   type="text"
   id="firstname"
@@ -160,6 +166,7 @@ const toggleModal = () =>{
             <form className={style.formdata}>
               <div className="div">
               <input
+   className={style.addressinput2}
   placeholder=" "
   type="text"
   id="firstname"
@@ -178,6 +185,7 @@ const toggleModal = () =>{
             <form className={style.formdata}>
               <div className="div">
               <input
+   className={style.addressinput2}
   placeholder=" "
   type="text"
   id="firstname"
@@ -196,8 +204,9 @@ const toggleModal = () =>{
             </div>
           
            </div>
+           <div className={style.centerbtn}>
           <button className={style.btnsave} onClick={handleSaveAddress}>Save</button>
-            
+          </div> 
 
           <div className={style.closeModal} onClick={toggleModal}>
           <TfiClose/>

@@ -20,9 +20,17 @@ const FinalAddress = () => {
         </div>
         </div>
         <div className={style.right}>
-         <input className={style.radiobtn} type="radio" /> Set as Default Address
+          <div className={style.radiobtn}>
+         <input type="radio" /> Set as Default Address
+         </div>
+         
+         <div className={style.icon}>
          <AiOutlineEdit fontSize={15}/>
+         </div>
+         <div className={style.icon}>
          <AiOutlineDelete fontSize={15}/>
+         </div>
+
         </div>
      </div>
      </div>
