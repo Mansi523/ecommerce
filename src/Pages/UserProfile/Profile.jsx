@@ -10,6 +10,7 @@ import Error from '../NotFound/Error';
 import style from '../UserProfile/Profile.module.css';
 import { useContext } from 'react';
 import { UserContext } from '../../Context/MyContext';
+import FinalAddress from '../../Components/Profile/FinalAddress';
 const Profile = () => {
   const {heading} = useContext(UserContext);
   return (
@@ -32,6 +33,7 @@ const Profile = () => {
       <div className={style.right}>
 
         <div className={style.Down}>
+          <div className={style.divinside}>
             {
             heading === "All" ?   <NoOrder/> : null
             }
@@ -43,16 +45,16 @@ const Profile = () => {
            
            heading === "My Address" ? <InitialAdress/> : null
            }
+           </div>
         </div>
       </div>
      </div>
 
-    <MyProfile/>
+    {/* <MyProfile/> */}
     
-
-
+    
     {/* <NoOrder/> */}
-    <Empty/>
+    {/* <Empty/> */}
     {/* <Loader/> */}
     </>
   )

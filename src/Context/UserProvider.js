@@ -4,8 +4,8 @@ import { Navigate } from "react-router-dom";
 import { UserContext } from "./MyContext";
 import { app, db, auth } from "../Firebase/Firebase";
 import {signOut, getAuth,signInWithPopup,GoogleAuthProvider,createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
-
+import { collection, addDoc,doc,updateDoc,arrayUnion,getDoc} from "firebase/firestore";
+import toast, { Toaster } from "react-hot-toast";
 const UserProvider = ({ children }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,14 +13,56 @@ const UserProvider = ({ children }) => {
   const [currentuser, setCurrentUser] = useState(null);
   const [heading,setheading] = useState("All");
   const [loader,setLoader] = useState(false);
+  const [Modal,setModal] = useState(false);
+  const[User,setUser]= useState({});
+
+  const [Categories, setCategories] = useState([
+    {
+      type: "Dresses",
+      show: false,
+    },
+    {
+      type: "Denim",
+      show: false,
+    },
+    {
+      type: "T-shirts",
+      show: false,
+    },
+    {
+      type: "Tops",
+      show: false,
+    },
+    {
+      type: "Sports&Gym",
+      show: false,
+    },
+  ]);
+  const [Address,setAddress] = useState({
+    Fullname:"",
+    MobileNo:"",
+    Email:"",
+    Address:"",
+    Locality:"",
+    Pincode:"",
+    City:"",
+    State:"",
+    });
+ const [Myprofile,setMyprofile] = useState({
+    Name:"",
+    birthday:"",
+    gender:"Female",
+    categorypreference:[],
+ });
+
 
   useEffect(() => {
     setLoader(true);
-    console.log("kuchbhi");
    onAuthStateChanged(auth, (user) => {
 
       if (user) {
         setCurrentUser(user);
+        // setUser(user);
         window.localStorage.setItem("August",JSON.stringify(user));        
         setLoader(false);
       } else {
@@ -31,7 +73,7 @@ const UserProvider = ({ children }) => {
 
   }, []);
 
-  const handleGoggleLogin =async()=>{
+const handleGoggleLogin =async()=>{
     setLoader(true);
 
 const provider = new GoogleAuthProvider();
@@ -59,11 +101,29 @@ const result = await signInWithPopup(auth, provider)
       });
       console.log("Document written with ID: ", docRef.id);
       setLoader(false);
+      toast('Sign in Successfully!',
+      {
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      }
+    );
       window.location.href = '/userprofile'
 
     } catch (e) {
       console.error("Error adding document: ", e);
       setLoader(false);
+      toast.error('Something went wrong!',
+      {
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      }
+    );
     }
 
 }catch(error) {
@@ -76,13 +136,22 @@ const result = await signInWithPopup(auth, provider)
     // The AuthCredential type that was used.
     const credential = GoogleAuthProvider.credentialFromError(error);
     setLoader(false);
+    toast.error('Something went wrong!',
+    {
+      style: {
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
+      },
+    }
+  );
     // ...
   };
 
   }
 
 
-  const handleSubmitLogin = (e) => {
+const handleSubmitLogin = (e) => {
     e.preventDefault();
 setLoader(true);
     console.log(email,password);
@@ -96,6 +165,15 @@ setLoader(true);
         const user = userCredential.user;
         // console.log(user);
 setLoader(false);
+toast('Loged in Successfully!',
+{
+  style: {
+    borderRadius: '10px',
+    background: '#333',
+    color: '#fff',
+  },
+}
+);
         window.location.href = '/userprofile'
        
       })
@@ -104,11 +182,19 @@ setLoader(false);
         const errorMessage = error.message;
         // console.log(errorCode, errorMessage);
 setLoader(false);
-
+toast.error('Something went wrong!',
+{
+  style: {
+    borderRadius: '10px',
+    background: '#333',
+    color: '#fff',
+  },
+}
+);
       });
   };
 
-  const handleSubmitSignup = async (e) => {
+const handleSubmitSignup = async (e) => {
     e.preventDefault();
     setLoader(true);
     console.log("from signup",email,password,name);
@@ -129,15 +215,37 @@ setLoader(false);
           profilepic:"profilepic",
           role: "user",
           userId:user.uid,
+          address:[],
+          phoneNo:"",
+          birthday:"",
+          gender:"",
+          categorypreference:[],
         });
-    setLoader(false);
-
+        window.localStorage.setItem("UserId",JSON.stringify(docRef._key.path.segments[1]));
+        setLoader(false);
+        toast('Sign in Successfully!',
+        {
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        }
+      );
         window.location.href = '/userprofile'
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
-        console.error("Error adding document: ", e);
-    setLoader(false);
-
+        console.error("Error adding document: ",e);
+        setLoader(false);
+        toast.error('Something went wrong!',
+        {
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',
+          },
+        }
+      );
       }
 
       console.log(user);
@@ -146,15 +254,31 @@ setLoader(false);
       const errorMessage = error.message;
       console.log(errorCode, errorMessage);
     setLoader(false);
-
+    toast.error('Something went wrong!',
+    {
+      style: {
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
+      },
     }
-
+  );
+    }
+    toast('Sign in Successfully!',
+    {
+      style: {
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
+      },
+    }
+  );
     setName("");
     setPassword("");
     setEmail("");
   };
   
-  const handleClickedItems =(item)=>{
+const handleClickedItems =(item)=>{
     setheading(item);
   }
 
@@ -168,19 +292,97 @@ signOut(auth).then(() => {
   // Sign-out successful.
   setLoader(false);
   window.localStorage.removeItem("August");
+  toast('Log Out Successfully!',
+  {
+    style: {
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
+    },
+  }
+);
   window.location.href = '/authenticate'
 }).catch((error) => {
   // An error happened.
   // console.log("Something went wrong",error);
+  toast.error('Something went wrong!',
+  {
+    style: {
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
+    },
+  }
+);
   setLoader(false);
-
+  
 });
 // window.open("/authenticate","_self");
   // <Navigate to="/authenticate"/>
   }
 
+const handleSaveAddress =async()=>{
+  const id = window.localStorage.getItem("UserId");
+  
+  const washingtonRef = doc(db,"users",JSON.parse(id));
+
+  // Atomically add a new region to the "regions" array field.
+  await updateDoc(washingtonRef, {
+    address: arrayUnion(Address)
+  });
+  
+  setModal(false);
+  
+}
+
+const handleConfirm = async()=>{
+  const id = window.localStorage.getItem("UserId");
+
+  const data = Categories.filter((item)=>item.show === true);
+  const washingtonRef = doc(db, "users",JSON.parse(id));
+
+// Set the "capital" field of the city 'DC'
+await updateDoc(washingtonRef,{
+  name:Myprofile.Name,
+  gender:Myprofile.gender,
+  birthday:Myprofile.birthday,
+  categorypreference:data,
+
+});
+toast('Successfully Modified!',
+  {
+    style: {
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
+    },
+  }
+);
+}
+
+// get current user
+useEffect(()=>{
+const getCurrentUser =async()=>{
+const id = window.localStorage.getItem("UserId");
+  const docRef = doc(db, "users",JSON.parse(id));
+  const docSnap = await getDoc(docRef);
+  
+  if (docSnap.exists()) {
+    setUser(docSnap.data());
+    setMyprofile({...Myprofile,Name:docSnap.data().name})
+    console.log("Document data:", docSnap.data());
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
+}
+getCurrentUser();
+},[currentuser])
+
   return (
-    <UserContext.Provider value={{ name, email, password, setName, setPassword, setEmail, handleSubmitSignup, handleSubmitLogin, currentuser,handleGoggleLogin,handleClickedItems,heading,handleLogOut,loader}}>
+    <UserContext.Provider value={{ name, email, password, setName, setPassword, setEmail, handleSubmitSignup, handleSubmitLogin, currentuser,handleGoggleLogin,handleClickedItems,heading,handleLogOut
+    ,loader,Address,setAddress,handleSaveAddress
+    ,Modal,setModal,Myprofile,setMyprofile,handleConfirm,Categories,setCategories,User}}>
       {children}
     </UserContext.Provider>
   );

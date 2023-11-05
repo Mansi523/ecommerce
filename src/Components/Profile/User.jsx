@@ -4,10 +4,12 @@ import style from '../Profile/User.module.css';
 import {PiCaretDownLight,PiCaretRightThin} from "react-icons/pi";
 import { useState,useEffect } from 'react';
 import {SlArrowUp} from "react-icons/sl";
+import {BsChevronDown} from "react-icons/bs";
+import {LiaAngleUpSolid} from "react-icons/lia";
 import { useContext } from 'react';
 import { UserContext } from '../../Context/MyContext';
 const User = () => {
-   const {handleClickedItems,handleLogOut,currentuser,loader} = useContext(UserContext);
+   const {handleClickedItems,handleLogOut,currentuser,loader,User} = useContext(UserContext);
    const myaccount = ["My Profile","My Address"];
    const myorders = ["All","Unpaid","Processing","Shipped","Delivered","Returns"];
    const helpcenter = ["Customer Service","Return Policy","Terms & Condition","Privacy Policy","Contact Us"];
@@ -87,7 +89,7 @@ const User = () => {
         <img className={style.logoUser} src={logo} alt="logouser" />
         </div>
         <div className={style.leftHeading}>
-         <h3 className={style.userLogoHeading}>{currentuser?.email}</h3>
+         <h3 className={style.userLogoHeading}>{User.name}</h3>
          <h4 className={style.userLogoText}>Welcome to August</h4>
          </div>
     </div>
@@ -96,7 +98,7 @@ const User = () => {
  <div className={style.myOrders} onClick={() => setmouseOverButton1(!mouseOverButton1)}>
     <h3>My Account</h3>
     <div className={style.icon}>
-      <span>{!mouseOverButton1?<PiCaretDownLight/>:<SlArrowUp/>}</span>
+      <span>{!mouseOverButton1?<BsChevronDown/>:<LiaAngleUpSolid/>}</span>
      
     </div>
   </div>
@@ -118,9 +120,9 @@ const User = () => {
             </div>)}
   <hr/>
   <div className={style.myOrders} onClick={() => setmouseOverButton2(!mouseOverButton2)}>
-    <h3>My Orders</h3>
+    <h3>My orders</h3>
     <div className={style.icon}>
-      <span><PiCaretDownLight/></span>
+      <span>{!mouseOverButton2?<BsChevronDown/>:<LiaAngleUpSolid/>}</span>
     </div>
   </div>
   {mouseOverButton2 &&(<div className={style.optionSelect}>
@@ -140,7 +142,7 @@ const User = () => {
   <div className={style.helpCenter} onClick={() => setmouseOverButton3(!mouseOverButton3)}>
     <h3>Help Center</h3>
     <div className={style.icon}>
-      <span><PiCaretDownLight/></span>
+      <span>{!mouseOverButton3?<BsChevronDown/>:<LiaAngleUpSolid/>}</span>
     </div>
   </div>
   {mouseOverButton3 &&(<div className={style.optionSelect}>

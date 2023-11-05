@@ -9,7 +9,7 @@
 .userLogo{
     display:flex;
     flex-direction:row;
-    justify-content:space-between;
+    /* justify-content:space-between; */
     align-items: center;
     margin-bottom:20px;
 }
@@ -34,7 +34,7 @@
     color:#131415;
     font-family: URMacan, -apple-system, blinkmacsystemfont, "Helvetica Neue", helvetica, segoe ui, arial, roboto, "PingFang SC", "miui", "Hiragino Sans GB", "Microsoft Yahei", sans-serif !important;
     font-weight:100;
-    font-size:0.8rem;
+    font-size:0.7rem;
 }
 .hrstyle{
     color:#131415 !important;
@@ -54,15 +54,13 @@
 }
 .optionSelect{
     height:auto;
-    /* border:1px solid black; */
-
 }
 .optionChoices{
     display: flex;
     align-items:center;
     justify-content:start;
     padding:5px;
-    /* border:1px solid black; */
+    margin-bottom:10px;
 }
 .optionChoices span{
     font-size:0.7rem;

@@ -10,7 +10,7 @@ import Error from "./Pages/NotFound/Error";
 import { useContext } from "react";
 import { UserContext } from "./Context/MyContext";
 import UserProvider from "./Context/UserProvider";
-
+import toast, { Toaster } from "react-hot-toast";
 const UserPrivateRoute = ({children})=>{
  const {currentuser,loader} = useContext(UserContext);
 console.log("1",loader);
@@ -55,7 +55,12 @@ function App() {
         <Route exact path='/admin' element={<Admin/>}/>
         <Route exact path="*" element={<Error/>}/>
       </Routes>
+      <Toaster 
+       position="top-center"
+       reverseOrder={false}
+        />
       </BrowserRouter>
+      
     </div>
   );
 }
