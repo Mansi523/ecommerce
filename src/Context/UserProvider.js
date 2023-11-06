@@ -15,6 +15,7 @@ const UserProvider = ({ children }) => {
   const [loader,setLoader] = useState(false);
   const [Modal,setModal] = useState(false);
   const[User,setUser]= useState({});
+  const [IsProfile,setIsProfile] = useState(false);
 
   const [Categories, setCategories] = useState([
     {
@@ -332,7 +333,7 @@ const handleSaveAddress =async()=>{
   });
   
   setModal(false);
-  
+  setIsProfile(!IsProfile);
 }
 
 const handleConfirm = async()=>{
@@ -358,6 +359,7 @@ toast('Successfully Modified!',
     },
   }
 );
+setIsProfile(!IsProfile);
 }
 
 // get current user
@@ -375,14 +377,19 @@ const id = window.localStorage.getItem("UserId");
     // docSnap.data() will be undefined in this case
     console.log("No such document!");
   }
+
 }
 getCurrentUser();
-},[currentuser])
+},[currentuser,IsProfile])
 
   return (
-    <UserContext.Provider value={{ name, email, password, setName, setPassword, setEmail, handleSubmitSignup, handleSubmitLogin, currentuser,handleGoggleLogin,handleClickedItems,heading,handleLogOut
+    <UserContext.Provider value={{ name, email, password, 
+      setName, setPassword, setEmail, handleSubmitSignup, 
+      handleSubmitLogin, currentuser,handleGoggleLogin,
+      handleClickedItems,heading,handleLogOut
     ,loader,Address,setAddress,handleSaveAddress
-    ,Modal,setModal,Myprofile,setMyprofile,handleConfirm,Categories,setCategories,User}}>
+    ,Modal,setModal,Myprofile,setMyprofile,handleConfirm,
+    Categories,setCategories,User}}>
       {children}
     </UserContext.Provider>
   );

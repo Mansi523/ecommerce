@@ -18,11 +18,11 @@ const toggleModal = () =>{
     return (
     
     <>
-     <FinalAddress/>
+    {User.address.length>0 && <FinalAddress/>} 
      <section className={style.Container}>
      
         <div className={style.emptyContainer}>
-          <div className={style.emptyIcon}>
+        { User.address.length === 0 && <><div className={style.emptyIcon}>
             <img src={map} alt="map" />
           </div>
           <div className={style.emptyText}>
@@ -30,6 +30,7 @@ const toggleModal = () =>{
            <br/>
            <span className={style.below}>and enjoy faster checkout</span>
           </div>
+          </> }
           <button className={style.btn} onClick={toggleModal}>Add New Address</button>
         </div>
        {Modal && 
