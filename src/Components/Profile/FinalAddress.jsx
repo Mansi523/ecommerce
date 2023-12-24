@@ -3,9 +3,10 @@ import style from "./FinalAddress.module.css";
 import {AiOutlineDelete,AiOutlineEdit} from "react-icons/ai";
 import { useContext } from 'react';
 import { UserContext } from '../../Context/MyContext';
-
+import {IoIosRadioButtonOff,IoCheckmarkCircle} from "react-icons/io";
+import {MdCheckCircle} from "react-icons/md";
 const FinalAddress = () => {
-  const {User} = useContext(UserContext);
+  const {User,handleAddressDelete,handleAddressUpdate,handleDefaultAddress} = useContext(UserContext);
   // Fullname:"",
   // MobileNo:"",
   // Email:"",
@@ -34,14 +35,20 @@ const FinalAddress = () => {
     </div>
     <div className={style.right}>
       <div className={style.radiobtn}>
-     <input type="radio" /> Set as Default Address
+         <div className={style.icons}>
+            {
+               address.id==User.defaultaddress.id ? <MdCheckCircle fontSize={20}/>:<IoIosRadioButtonOff fontSize={20} onClick={()=>handleDefaultAddress(address)}/>
+            }
+       
+       </div>
+       <span >{ address.id==User.defaultaddress.id ? "Default":"Set As Default Address"}</span>
      </div>
      
      <div className={style.icon}>
-     <AiOutlineEdit fontSize={15}/>
+     <AiOutlineEdit fontSize={15} onClick={()=>handleAddressUpdate(address)}/>
      </div>
      <div className={style.icon}>
-     <AiOutlineDelete fontSize={15}/>
+     <AiOutlineDelete fontSize={15} onClick={()=>handleAddressDelete(address)}/>
      </div>
 
     </div>

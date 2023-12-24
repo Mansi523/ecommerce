@@ -3,8 +3,8 @@ import React, { useState, createContext, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "./MyContext";
 import { app, db, auth } from "../Firebase/Firebase";
-import {signOut, getAuth,signInWithPopup,GoogleAuthProvider,createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { collection, addDoc,doc,updateDoc,arrayUnion,getDoc} from "firebase/firestore";
+import {signOut, sendPasswordResetEmail , getAuth,signInWithPopup,GoogleAuthProvider,createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { collection, addDoc,doc,updateDoc,arrayUnion,getDoc, arrayRemove} from "firebase/firestore";
 import toast, { Toaster } from "react-hot-toast";
 const UserProvider = ({ children }) => {
   const [name, setName] = useState("");
@@ -16,6 +16,8 @@ const UserProvider = ({ children }) => {
   const [Modal,setModal] = useState(false);
   const[User,setUser]= useState({});
   const [IsProfile,setIsProfile] = useState(false);
+  const [IsUpdate,setIsUpdate] = useState(null);
+  const [Reset,setReset] = useState("");
 
   const [Categories, setCategories] = useState([
     {
@@ -98,10 +100,16 @@ const result = await signInWithPopup(auth, provider)
         profilepic:user.photoURL,
         role: "user",
         userId:user.uid,
-
+        address:[],
+        phoneNo:"",
+        birthday:"",
+        gender:"",
+        categorypreference:[],
+        defaultaddress:{},
       });
       console.log("Document written with ID: ", docRef.id);
       setLoader(false);
+      window.localStorage.setItem("UserId",JSON.stringify(docRef._key.path.segments[1]));
       toast('Sign in Successfully!',
       {
         style: {
@@ -164,7 +172,9 @@ setLoader(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        // console.log(user);
+        // window.localStorage.setItem("userlogin",JSON.stringify(userCredential));
+        // window.localStorage.setItem("UserId",JSON.stringify(user.uid));
+   
 setLoader(false);
 toast('Loged in Successfully!',
 {
@@ -221,6 +231,7 @@ const handleSubmitSignup = async (e) => {
           birthday:"",
           gender:"",
           categorypreference:[],
+          defaultaddress:{},
         });
         window.localStorage.setItem("UserId",JSON.stringify(docRef._key.path.segments[1]));
         setLoader(false);
@@ -292,6 +303,7 @@ signOut(auth).then(() => {
   console.log("signout successfully");
   // Sign-out successful.
   setLoader(false);
+  // window.localStorage.removeItem("UserId");
   window.localStorage.removeItem("August");
   toast('Log Out Successfully!',
   {
@@ -328,11 +340,24 @@ const handleSaveAddress =async()=>{
   const washingtonRef = doc(db,"users",JSON.parse(id));
 
   // Atomically add a new region to the "regions" array field.
+  const DATA = {...Address,id:Date.now()}
   await updateDoc(washingtonRef, {
-    address: arrayUnion(Address)
+    address: arrayUnion(DATA)
   });
   
   setModal(false);
+  setAddress(
+  {
+  Fullname:"",
+  MobileNo:"",
+  Email:"",
+  Address:"",
+  Locality:"",
+  Pincode:"",
+  City:"",
+  State:"",
+}
+  )
   setIsProfile(!IsProfile);
 }
 
@@ -366,6 +391,7 @@ setIsProfile(!IsProfile);
 useEffect(()=>{
 const getCurrentUser =async()=>{
 const id = window.localStorage.getItem("UserId");
+if(id){
   const docRef = doc(db, "users",JSON.parse(id));
   const docSnap = await getDoc(docRef);
   
@@ -377,10 +403,115 @@ const id = window.localStorage.getItem("UserId");
     // docSnap.data() will be undefined in this case
     console.log("No such document!");
   }
+}
 
 }
 getCurrentUser();
 },[currentuser,IsProfile])
+
+const handleAddressDelete = async(address)=>{
+  const id = window.localStorage.getItem("UserId");
+  
+  const washingtonRef = doc(db,"users",JSON.parse(id));
+
+  // Atomically add a new region to the "regions" array field.
+  await updateDoc(washingtonRef, {
+    address: arrayRemove(address)
+  });
+  setIsProfile(!IsProfile);
+  toast('Address deleted successfully!',
+  {
+    style: {
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
+    },
+  }
+);
+}
+
+const handleAddressUpdate =(address)=>{
+   setModal(true);
+   setIsUpdate(address);
+
+}
+
+const handleSaveUpdate =async()=>{
+  console.log(Address);
+  const id = window.localStorage.getItem("UserId");
+  
+  const washingtonRef = doc(db,"users",JSON.parse(id));
+
+  // Atomically add a new region to the "regions" array field.
+  await updateDoc(washingtonRef, {
+    address: arrayRemove(IsUpdate)
+  });
+  await updateDoc(washingtonRef, {
+    address: arrayUnion(Address)
+  });
+  setModal(false);
+  setIsUpdate(null);
+  setIsProfile(!IsProfile);
+}
+
+const handleDefaultAddress =async(address)=>{
+  const id = window.localStorage.getItem("UserId");
+
+  const washingtonRef = doc(db, "users",JSON.parse(id));
+
+// Set the "capital" field of the city 'DC'
+await updateDoc(washingtonRef,{
+  defaultaddress:address,
+});
+toast('default!',
+  {
+    style: {
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
+    },
+  }
+);
+setIsProfile(!IsProfile);
+}
+
+const handleReset =()=>{
+
+  sendPasswordResetEmail(auth,Reset)
+    .then(() => {
+      // Password reset email sent!
+      // ..
+     
+      toast('plz check your email!',
+  {
+    style: {
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
+    },
+  }
+);
+
+window.location.href = '/authenticate'
+
+
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      toast.error(errorMessage,
+      {
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      }
+    );
+      // ..
+    });
+    
+}
 
   return (
     <UserContext.Provider value={{ name, email, password, 
@@ -389,7 +520,10 @@ getCurrentUser();
       handleClickedItems,heading,handleLogOut
     ,loader,Address,setAddress,handleSaveAddress
     ,Modal,setModal,Myprofile,setMyprofile,handleConfirm,
-    Categories,setCategories,User}}>
+    Categories,setCategories,User,handleAddressDelete,
+    handleAddressUpdate,IsUpdate,handleSaveUpdate,handleDefaultAddress
+    ,Reset,setReset,handleReset
+    }}>
       {children}
     </UserContext.Provider>
   );

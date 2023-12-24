@@ -2,11 +2,12 @@ import React from 'react';
 import style from './Login.module.css';
 import { FcGoogle } from "react-icons/fc";
 import { useContext } from 'react';
+import {useNavigate} from 'react-router-dom';
 import { UserContext } from '../../Context/MyContext';
 import GoogleLogin from './GoogleLogin';
 const Login = () => {
   let { email, password, setEmail, setPassword, handleSubmitLogin,loader } = useContext(UserContext);
-
+  const navigate = useNavigate();
   return (
     <>
        <div className={style.form}>
@@ -37,6 +38,7 @@ const Login = () => {
               autoComplete='off'
             />
           </div>
+          <span className={style.forgot} onClick={()=>navigate("/reset")}>Forgot Password ?</span>
           <button className={style.btnlogin}>
             Login
           </button>
