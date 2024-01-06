@@ -1,37 +1,48 @@
 import React from 'react'
 import { Virtual, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
+import style from "../Home/TopProduct.module.css";
+import { useContext } from 'react';
+import { ProductContext } from '../../Context/MyContext';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 const TopProduct = () => {
+  const{topProduct} = useContext(ProductContext);
+  console.log("product",topProduct);
   return (
     <div>
    <div className="container-fluid">
     <div className="row">
          <Swiper
         modules={[Virtual, Navigation, Pagination]}
-        slidesPerView={3}
-        centeredSlides={true}
-        spaceBetween={30}
+        slidesPerView={5}
+        centeredSlides={false}
+        spaceBetween={10}
         pagination={{
-          type: 'fraction',
+          type:'fraction',
         }}
         navigation={true}
         virtual
       >
-        {[1,2,3,4,5,6].map((slideContent, index) => (
-          <SwiperSlide key={slideContent} virtualIndex={index}>
-            {slideContent}
+        {topProduct.map((p, index) => (
+          <SwiperSlide key={p.id} virtualIndex={index}>
+           <div className={style.card}>
+            <div className={style.productimg}><img alt={p.name} src={p.photo.url}/></div>
+            <div className={style.info}>
+              <div className={style.clothesname}>{p.name}</div>
+              <div className={style.topclothesprice}>₹{p.price}</div>
+            </div>
+           </div>
           </SwiperSlide>
-    
-
+         
    
         ))}
        <SwiperSlide>
-         7
+         <div className={style.viewmore}>
+         <h3>View More</h3>
+         </div>
           </SwiperSlide>
       </Swiper>
     </div>

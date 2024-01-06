@@ -1,0 +1,36 @@
+.card {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
+    margin-top:20px;
+}
+.productimg img{
+   height:400px;
+   width:100%;
+   z-index:-1;
+   object-fit: contain;
+}
+.info{
+    /* width:100%; */
+    color:black;
+}
+.clothesname{
+    font-size:1.5rem;
+    font-weight:600;
+}
+.topclothesprice{
+    font-size:1.5rem;
+    font-weight:600;
+}
+.viewmore{
+    height:400px;
+    width:100%; 
+    text-align:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.viewmore h3{
+    color:black;
+    /* font-family:'URDalaFloda' !important; */
+    font-size:2rem;
+}
