@@ -17,7 +17,7 @@ const HomeCategory = () => {
     <div className="row">
     <Swiper
         modules={[Virtual, Navigation, Pagination]}
-        slidesPerView={2}
+        slidesPerView={2.5}
         centeredSlides={false}
         spaceBetween={0}
         // pagination={{
