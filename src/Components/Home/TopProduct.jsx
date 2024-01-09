@@ -15,14 +15,14 @@ const TopProduct = () => {
     <div>
    <div className="container-fluid">
     <div className="row">
-         <Swiper
+         <Swiper 
         modules={[Virtual, Navigation, Pagination]}
         slidesPerView={5}
         centeredSlides={false}
         spaceBetween={10}
-        pagination={{
-          type:'fraction',
-        }}
+        // pagination={{
+        //   type:'fraction',
+        // }}
         navigation={true}
         virtual
       >
