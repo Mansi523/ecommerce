@@ -12,6 +12,7 @@ const ProductProvider = ({children}) => {
       inFocusVideo:{},
       homeBanner:"",
       homeEveryMood:[],
+      video:[],
     });
 
 
@@ -47,8 +48,8 @@ try{
                 inFocusVideo:data?.inFocusVideo,
                 homeBanner:data?.bannerName,
                 homeEveryMood:data?.yourEveryMood,
+                video:data?.video,
               });
-              console.log("3332222#3333",data?.yourEveryMood);
             });
 
       }catch(e){
@@ -59,8 +60,9 @@ const inFocusPhoto = category.inFocusPhoto;
 const inFocusVideo = category.inFocusVideo;
 const homeBanner = category.homeBanner;
 const homeEveryMood = category.homeEveryMood;
+const video = category.video;
   return (
-   <ProductContext.Provider value={{topProduct,category,inFocusPhoto,inFocusVideo,homeBanner,homeEveryMood}}>
+   <ProductContext.Provider value={{topProduct,category,inFocusPhoto,inFocusVideo,homeBanner,homeEveryMood,video}}>
     {children}
    </ProductContext.Provider>
   )

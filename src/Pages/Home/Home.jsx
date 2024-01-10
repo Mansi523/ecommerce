@@ -7,11 +7,14 @@ import InFocusDress from '../../Components/Home/InFocusDress';
 import HomeBanner from '../../Components/Home/HomeBanner';
 import BestSelller from '../../Components/Home/BestSelller';
 import EveryMood from '../../Components/Home/EveryMood';
+import { useContext } from 'react';
+import { ProductContext } from '../../Context/MyContext';
 const Home = () => {
+  const {video} = useContext(ProductContext);
   return (
    <>
     <div className={style.videocls}>
-     <video src={videoBg} autoPlay loop muted/>
+     <video src={video.url} autoPlay loop muted/>
      <div className={style.content1}>
       <h1>August</h1>
       <p>Eligance is elimination.</p>
