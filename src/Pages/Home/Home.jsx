@@ -3,6 +3,7 @@ import videoBg from '../../Assets/video.mp4';
 import style from '../Home/Home.module.css';
 import TopProduct from '../../Components/Home/TopProduct';
 import HomeCategory from '../../Components/Home/HomeCategory';
+import InFocusDress from '../../Components/Home/InFocusDress';
 const Home = () => {
   return (
    <>
@@ -16,6 +17,7 @@ const Home = () => {
       </div>
      <TopProduct/>
      <HomeCategory/>
+     <InFocusDress/>
       </>
   )
 }
