@@ -4,6 +4,7 @@ import style from '../Home/Home.module.css';
 import TopProduct from '../../Components/Home/TopProduct';
 import HomeCategory from '../../Components/Home/HomeCategory';
 import InFocusDress from '../../Components/Home/InFocusDress';
+import HomeBanner from '../../Components/Home/HomeBanner';
 const Home = () => {
   return (
    <>
@@ -18,6 +19,7 @@ const Home = () => {
      <TopProduct/>
      <HomeCategory/>
      <InFocusDress/>
+     <HomeBanner/>
       </>
   )
 }

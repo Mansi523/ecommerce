@@ -10,6 +10,7 @@ const ProductProvider = ({children}) => {
       categories:[],
       inFocusPhoto:{},
       inFocusVideo:{},
+      homeBanner:"",
     });
 
 
@@ -43,8 +44,9 @@ try{
                 categories:data?.categories?.slice(0,3),
                 inFocusPhoto:data?.inFocusPhoto,
                 inFocusVideo:data?.inFocusVideo,
+                homeBanner:data?.bannerName,
               });
-              // console.log("3332222#3333",data?.inFocusVideo);
+              console.log("3332222#3333",data?.bannerName,);
             });
 
       }catch(e){
@@ -53,8 +55,9 @@ try{
           },[])
 const inFocusPhoto = category.inFocusPhoto;
 const inFocusVideo = category.inFocusVideo;
+const homeBanner = category.homeBanner;
   return (
-   <ProductContext.Provider value={{topProduct,category,inFocusPhoto,inFocusVideo}}>
+   <ProductContext.Provider value={{topProduct,category,inFocusPhoto,inFocusVideo,homeBanner}}>
     {children}
    </ProductContext.Provider>
   )
