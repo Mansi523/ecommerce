@@ -6,6 +6,7 @@ import HomeCategory from '../../Components/Home/HomeCategory';
 import InFocusDress from '../../Components/Home/InFocusDress';
 import HomeBanner from '../../Components/Home/HomeBanner';
 import BestSelller from '../../Components/Home/BestSelller';
+import EveryMood from '../../Components/Home/EveryMood';
 const Home = () => {
   return (
    <>
@@ -22,6 +23,7 @@ const Home = () => {
      <InFocusDress/>
      <HomeBanner/>
      <BestSelller/>
+     <EveryMood/>
       </>
   )
 }

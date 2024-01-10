@@ -28,11 +28,7 @@ const HomeCategory = () => {
       >
         {category.categories?.map((c,index) => (
           <SwiperSlide id={style.categorySlider} key={c.id} virtualIndex={index}>
-            {/* <div className={style.card}>
-                <div className={style.producting}> */}
                     <img alt={c.category} src={c.url}/>
-                    {/* </div>
-                </div>             */}
           </SwiperSlide>
         ))}
       </Swiper>
