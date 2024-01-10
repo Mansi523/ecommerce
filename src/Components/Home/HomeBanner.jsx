@@ -17,6 +17,9 @@ const HomeBanner = () => {
       <span>{homeBanner}</span>
       <span>{homeBanner}</span>
       <span>{homeBanner}</span>
+      <span>{homeBanner}</span>
+      <span>{homeBanner}</span>
+      <span>{homeBanner}</span>
 </marquee>
     </div>
   )

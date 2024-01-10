@@ -5,6 +5,7 @@ import TopProduct from '../../Components/Home/TopProduct';
 import HomeCategory from '../../Components/Home/HomeCategory';
 import InFocusDress from '../../Components/Home/InFocusDress';
 import HomeBanner from '../../Components/Home/HomeBanner';
+import BestSelller from '../../Components/Home/BestSelller';
 const Home = () => {
   return (
    <>
@@ -20,6 +21,7 @@ const Home = () => {
      <HomeCategory/>
      <InFocusDress/>
      <HomeBanner/>
+     <BestSelller/>
       </>
   )
 }
