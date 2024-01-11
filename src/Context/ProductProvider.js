@@ -4,8 +4,10 @@ import { ProductContext } from './MyContext';
 import { db } from '../Firebase/Firebase';
 import {collection,onSnapshot,doc} from "firebase/firestore";
 
+
 const ProductProvider = ({children}) => {
     const [topProduct,setTopProduct] = useState([]);
+    const [product,setProduct] = useState([]);
     const [category,setCategory] = useState({
       categories:[],
       inFocusPhoto:{},
@@ -25,7 +27,7 @@ try{
             id:doc.id,
           }
         })
-    
+    setProduct(data);
         setTopProduct(data.slice(0,6));
 
       });
@@ -62,7 +64,7 @@ const homeBanner = category.homeBanner;
 const homeEveryMood = category.homeEveryMood;
 const video = category.video;
   return (
-   <ProductContext.Provider value={{topProduct,category,inFocusPhoto,inFocusVideo,homeBanner,homeEveryMood,video}}>
+   <ProductContext.Provider value={{topProduct,category,inFocusPhoto,inFocusVideo,homeBanner,homeEveryMood,video,product}}>
     {children}
    </ProductContext.Provider>
   )

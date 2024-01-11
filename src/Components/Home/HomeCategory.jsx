@@ -4,13 +4,16 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import style from "../Home/HomeCategory.module.css";
 import { useContext } from 'react';
 import { ProductContext } from '../../Context/MyContext';
+import { useNavigate } from 'react-router-dom';
+
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+
 const HomeCategory = () => {
     const {category} = useContext(ProductContext);
-
+   const navigate = useNavigate();
   return (
     <div>
          <div className="container-fluid" id={style.categoryouter}>
@@ -20,14 +23,11 @@ const HomeCategory = () => {
         slidesPerView={2.5}
         centeredSlides={false}
         spaceBetween={0}
-        // pagination={{
-        //   type: 'fraction',
-        // }}
         navigation={true}
         virtual
       >
         {category.categories?.map((c,index) => (
-          <SwiperSlide id={style.categorySlider} key={c.id} virtualIndex={index}>
+          <SwiperSlide id={style.categorySlider} key={c.id} virtualIndex={index} onClick={()=>navigate(`/category/${c.id}`)}>
                     <img alt={c.category} src={c.url}/>
           </SwiperSlide>
         ))}

@@ -11,6 +11,12 @@ import { useContext } from "react";
 import { UserContext } from "./Context/MyContext";
 import UserProvider from "./Context/UserProvider";
 import toast, { Toaster } from "react-hot-toast";
+import Product from "./Pages/Product/Product";
+import "./Style/Category.css";
+import "./Style/Product.css";
+import "./Style/ProductDetails.css";
+import ProductDetails from "./Pages/Product/ProductDetails";
+import Category from "./Pages/Category/Category";
 
 const UserPrivateRoute = ({children})=>{
  const {currentuser,loader} = useContext(UserContext);
@@ -54,6 +60,10 @@ function App() {
         <Route exact path='/admin' element={<Admin/>}/>
         <Route exact path="*" element={<Error/>}/>
         <Route exact path= "/reset" element={<ResetPassword/>}/>
+        <Route exact path= "/product" element={<Product/>}/>
+        <Route exact path= "/details/:id" element={<ProductDetails/>}/>
+        <Route exact path= "/category/:id" element={<Category/>}/>
+        
       </Routes>
       <Toaster 
        position="top-center"

@@ -4,12 +4,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import style from "../Home/TopProduct.module.css";
 import { useContext } from 'react';
 import { ProductContext } from '../../Context/MyContext';
+import {useNavigate } from 'react-router-dom';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 const TopProduct = () => {
   const{topProduct} = useContext(ProductContext);
+  const navigate = useNavigate();
   console.log("product",topProduct);
   return (
     <div>
@@ -27,7 +29,7 @@ const TopProduct = () => {
         virtual
       >
         {topProduct.map((p, index) => (
-          <SwiperSlide key={p.id} virtualIndex={index}>
+          <SwiperSlide key={p.id} virtualIndex={index}  onClick={()=>navigate(`/details/${p?.id}`)}>
            <div className={style.card}>
             <div className={style.productimg}><img alt={p.name} src={p.photo.url}/></div>
             <div className={style.info}>
@@ -41,7 +43,7 @@ const TopProduct = () => {
         ))}
        <SwiperSlide>
          <div className={style.viewmore}>
-         <h3>View More</h3>
+         <h3 onClick={()=>navigate("/product")}>View More</h3>
          </div>
           </SwiperSlide>
       </Swiper>
