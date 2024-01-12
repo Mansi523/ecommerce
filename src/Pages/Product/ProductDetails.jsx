@@ -9,6 +9,20 @@ import { useContext,useEffect } from "react";
 import { ProductContext } from "../../Context/MyContext";
 import {collection,onSnapshot,doc} from "firebase/firestore";
 import { db } from "../../Firebase/Firebase";
+const style = {
+  position: "absolute",
+  top: "40%",
+  left: "75%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  height: 300,
+  borderRadius: "10px",
+  bgcolor: "background.paper",
+
+  boxShadow: 24,
+  p: 4,
+};
+
 const ProductDetails = () => {
   const [productDetails,setProductDetails] = useState({});
   const [open, setOpen] = useState(false);
@@ -101,10 +115,12 @@ const ProductDetails = () => {
         setOpen={setOpen}
         handleClose={handleClose}
         handleOpen={handleClose}
+        style={style}
       />
       <SimilarProduct 
         id={productDetails?.categoriesName?.id}
       />
+
     </>
   );
 };
