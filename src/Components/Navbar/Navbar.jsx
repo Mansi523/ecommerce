@@ -4,7 +4,6 @@ import {useContext} from 'react'
 import { UserContext } from '../../Context/MyContext';
 import style from '../Navbar/Navbar.module.css';
 import {CiSearch} from 'react-icons/ci';
-
 import {CiUser} from 'react-icons/ci';
 import {PiBagLight} from 'react-icons/pi';
 import {TfiHelpAlt} from 'react-icons/tfi';
@@ -35,7 +34,7 @@ const Navbar = () => {
     { !currentuser?<Link to='/authenticate'><div className={style.icons}><CiUser fontSize={20}/></div></Link>
      :<Link to='/userprofile'><div className={style.icons}><CiUser fontSize={20}/></div></Link>
     }
-     <div className={style.icons}><PiBagLight fontSize={20}/></div>
+     <div className={style.icons}><PiBagLight fontSize={20} onClick={()=>navigate('/cart')}/></div>
      <div className={style.icons}><TfiHelpAlt fontSize={17}/></div>    
     </div>   
      </div>     

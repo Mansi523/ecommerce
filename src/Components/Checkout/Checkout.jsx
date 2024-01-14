@@ -2,7 +2,9 @@ import React from "react";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { HiOutlineCreditCard } from "react-icons/hi2";
 import { PiKeyReturnBold } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 const Checkout = () => {
+  const navigate = useNavigate();
   return (
     <div className="container-fluid  ">
       <div className="row checkout p-4">
@@ -29,7 +31,7 @@ const Checkout = () => {
             </div>
           </div>
           <div className="row m-auto py-4">
-            <button className="btn btn-dark">CHECKOUT(10)</button>
+            <button className="btn btn-dark" onClick={()=>navigate('/checkout')}>CHECKOUT(10)</button>
             <p className="pt-3">
               Do you have a discount coupon? Add in the next step.
             </p>

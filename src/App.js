@@ -19,6 +19,7 @@ import ProductDetails from "./Pages/Product/ProductDetails";
 import Category from "./Pages/Category/Category";
 import Bag from "./Pages/Bag/Bag";
 import Wishlist from "./Pages/Bag/Wishlist";
+import Checkout from "./Pages/Favourite/Checkout";
 
 const UserPrivateRoute = ({children})=>{
  const {currentuser,loader} = useContext(UserContext);
@@ -67,6 +68,7 @@ function App() {
         <Route exact path= "/category/:id" element={<Category/>}/>
         <Route exact path= "/cart" element={<Bag/>}/>
         <Route exact path= "/wishlist" element={<Wishlist/>}/>
+        <Route exact path= "/checkout" element={<Checkout/>}/>
         
       </Routes>
       <Toaster 

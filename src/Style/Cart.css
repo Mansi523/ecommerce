@@ -101,6 +101,22 @@
 
 /* ==============================
 ============ */
-.checkout {
+.checkout,
+.CheckoutHeading {
     background-color: rgb(244, 244, 244);
+}
+
+.paymentCheckout {
+    padding: 2rem;
+    ;
+}
+
+.addressCheckoutTime {
+    border-bottom: 1px dotted grey;
+}
+
+.checkoutImag img {
+    height: auto;
+    width: 150px;
+    object-fit: contain;
 }
