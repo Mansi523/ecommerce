@@ -15,9 +15,8 @@ const Category = () => {
     const data = product.filter((c)=>(
        c?.categoriesName?.id === id
     ))
-    console.log("data of category",data);
     setCategory(data);
-   },[id])
+   },[id,product])
 
    const [rightFilterOpen, setRightFilterOpen] = useState(false);
    const [leftFilterOpen, setLeftFilterOpen] = useState(false);
@@ -25,14 +24,18 @@ const Category = () => {
    console.log(id);
    const rightFilterRef = useRef(null);
    const leftFilterRef = useRef(null);
-   const [price, setPrice] = useState(500);
- 
+   const [price, setPrice] = useState(200);
+
    const handlePriceChange = (event) => {
-     setPrice(event.target.value);
-   };
- 
+    const newPrice = Number(event.target.value);
+    setPrice(newPrice);
+  
+    const filteredData = product.filter((p) => p.price <= newPrice);
+    setCategory(filteredData);
+  };
+  
    const minPrice = 0;
-   const maxPrice = 1000;
+   const maxPrice = 30000;
  
    useEffect(() => {
      const handleClickOutside = (event) => {
@@ -40,7 +43,6 @@ const Category = () => {
          leftFilterRef.current &&
          !leftFilterRef.current.contains(event.target)
        ) {
-         // Clicking inside the leftFilter, do nothing
          setLeftFilterOpen(false);
          return;
        }
@@ -51,7 +53,6 @@ const Category = () => {
          setRightFilterOpen(false);
          return;
        }
-       // Clicking outside the leftFilter, close it
      };
  
      document.addEventListener("click", handleClickOutside);
@@ -60,6 +61,23 @@ const Category = () => {
        document.removeEventListener("click", handleClickOutside);
      };
    }, [leftFilterRef, rightFilterOpen]);
+
+  const handleHighToLow = ()=>{
+    const sortedArray = category.sort((a, b) => b.price - a.price);
+    setCategory(sortedArray);
+  }
+
+  const handleLowToHigh = ()=>{
+    const sortedArray = category.sort((a, b) => a.price - b.price );
+    setCategory(sortedArray);
+  }
+
+  const recomended = ()=>{
+    const data = product.filter((c)=>(
+      c?.categoriesName?.id === id
+   ))
+   setCategory(data);
+  }
 
   return (
 
@@ -89,11 +107,9 @@ const Category = () => {
                         <div className="row">
                           <input
                             type="range"
-                            id="price-range"
-                            className="price-range-input"
                             min={minPrice}
                             max={maxPrice}
-                            step="10"
+                            step="5"
                             value={price}
                             onChange={handlePriceChange}
                           />
@@ -124,9 +140,9 @@ const Category = () => {
                 {rightFilterOpen && (
                   <div className="popupFilter">
                     <div className="underpayment">
-                      <p>Recommended</p>
-                      <p>Price: High to Low</p>
-                      <p>Price: Low to High</p>
+                      <p onClick={recomended}>Recommended</p>
+                      <p onClick={handleHighToLow}>Price: High to Low</p>
+                      <p onClick={handleLowToHigh}>Price: Low to High</p>
                     </div>
                   </div>
                 )}

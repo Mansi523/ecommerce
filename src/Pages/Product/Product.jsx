@@ -4,25 +4,49 @@ import { CiFilter } from "react-icons/ci";
 import { useNavigate,useParams} from "react-router-dom";
 import HomeBanner from "../../Components/Home/HomeBanner.jsx";
 import { ProductContext } from "../../Context/MyContext.js";
+import { Select } from "antd";
+const { Option } = Select;
 
 const Product = () => {
   const navigate = useNavigate();
-   const {product} = useContext(ProductContext);
+   const {product,filterCategory} = useContext(ProductContext);
+   const recomendedp = product;
    const [catOpen, setCatOpen] = useState(false);
+   const [fProduct,setFProduct] = useState([]);
    const [rightFilterOpen, setRightFilterOpen] = useState(false);
   const [leftFilterOpen, setLeftFilterOpen] = useState(false);
+  const [categoriesName, setCategoriesName] = useState(null);
   const { id } = useParams();
   console.log(id);
   const rightFilterRef = useRef(null);
   const leftFilterRef = useRef(null);
   const [price, setPrice] = useState(500);
 
+   useEffect(()=>{
+    setFProduct(product);
+   },[product])
+
+
+
   const handlePriceChange = (event) => {
-    setPrice(event.target.value);
+    const newPrice = Number(event.target.value);
+    setPrice(newPrice);
+  
+    const filteredData = product.filter((p) => 
+    {
+      if(categoriesName){
+       return p.price <= newPrice && 
+       p?.categoriesName?.id === categoriesName.id
+      }
+      return p.price <= newPrice
+    }
+    
+    );
+    setFProduct(filteredData);
   };
 
   const minPrice = 0;
-  const maxPrice = 1000;
+  const maxPrice = 30000;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -50,6 +74,34 @@ const Product = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [leftFilterRef, rightFilterOpen]);
+
+  const handleHighToLow = () => {
+    const sortedArray = [...fProduct].sort((a, b) => b.price - a.price);
+    setFProduct(sortedArray);
+  };
+  
+  const handleLowToHigh = () => {
+    const sortedArray = [...fProduct].sort((a, b) => a.price - b.price);
+    setFProduct(sortedArray);
+  };
+  
+
+  const recomended = ()=>{
+   setFProduct(recomendedp);
+  }
+
+  const handleCategoryFilter = (value)=>{
+    console.log("print karo value",value);
+    const data = product.filter((p,i)=>(
+    p?.categoriesName?.id === value.id
+    && p.price <= price
+    ))
+    setFProduct(data);
+    setCategoriesName(value);
+
+
+  }
+
   return (
     <>
       <div className="product my-5">
@@ -75,11 +127,9 @@ const Product = () => {
                         <div className="row">
                           <input
                             type="range"
-                            id="price-range"
-                            className="price-range-input"
                             min={minPrice}
                             max={maxPrice}
-                            step="10"
+                            step="5"
                             value={price}
                             onChange={handlePriceChange}
                           />
@@ -90,43 +140,25 @@ const Product = () => {
                         <span className="max-price">₹{price}</span>
 
                       </div>
-                      <div
-                        className="accordion text-light"
-                        id="accordionExample"
-                      >
-                        <div className="accordion-item">
-                          <h2 className="accordion-header">
-                            <button
-                              className="accordion-button"
-                              type="button"
-                              data-bs-toggle="collapse"
-                              data-bs-target="#collapseOne"
-                              aria-expanded="true"
-                              aria-controls="collapseOne"
-                              onClick={() => setCatOpen(!catOpen)}
-                            >
-                              Category
-                            </button>
-                          </h2>
+                     <div className="row">
+                     <Select
+                bordered={false}
+                placeholder="Select a category"
+                size="large"
+                showSearch
+                className="form-select mb-3"
+                onChange={(value) => {
+                  handleCategoryFilter(JSON.parse(value));
+                }}
+              >
+             {filterCategory?.map((c) => (
+  <Option className="categorydropdown" key={c.id} value={JSON.stringify(c)}>
+    {c.category}
+  </Option>
+))}
+              </Select>
+                     </div>
 
-                          {catOpen && (
-                            <div
-                              id="collapseOne"
-                              className="accordion-collapse collapse show"
-                              data-bs-parent="#accordionExample"
-                            >
-                              <div className="accordion-body">
-                                <strong>
-                                  This is the first item's accordion body.
-                                </strong>{" "}
-                                It is shown by default, until the collapse
-                                plugin adds the appropriate classes that we use
-                                to style
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
                     </div>
                   </div>
                 )}
@@ -148,9 +180,9 @@ const Product = () => {
                 {rightFilterOpen && (
                   <div className="popupFilter">
                     <div className="underpayment">
-                      <p>Recommended</p>
-                      <p>Price: High to Low</p>
-                      <p>Price: Low to High</p>
+                      <p onClick={recomended}>Recommended</p>
+                      <p onClick={handleHighToLow}>Price: High to Low</p>
+                      <p onClick={handleLowToHigh}>Price: Low to High</p>
                     </div>
                   </div>
                 )}
@@ -188,7 +220,7 @@ const Product = () => {
                 </div>
               </div> */}
                                   <div className="row m-auto">
-                      {product.map((d, i) => (
+                      {fProduct.map((d, i) => (
                         <div
                           className="col-sm-3 my-2"
                           key={d.id}

@@ -69,3 +69,7 @@ video {
     justify-content: space-between;
     align-items: center;
 }
+.categorydropdown{
+    width:300px !important;
+    z-index:9999999999999999 !important;
+}

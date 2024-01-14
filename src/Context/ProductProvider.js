@@ -16,7 +16,7 @@ const ProductProvider = ({children}) => {
       homeEveryMood:[],
       video:[],
     });
-
+const [filterCategory,setFilterCategory] = useState([]);
 
     useEffect(()=>{
 try{
@@ -35,6 +35,24 @@ try{
    console.log(e);
 }
     },[])
+
+    useEffect(()=>{
+      try{
+        onSnapshot(collection(db, "category"), (snapshot) => {
+              const data = snapshot.docs.map((doc)=>{
+                return {
+                  ...doc.data(),
+                  id:doc.id,
+                }
+              })
+         setFilterCategory(data);       
+      
+            });
+      }catch(e){
+         console.log(e);
+      }
+          },[])
+
 
     useEffect(()=>{
       try{
@@ -64,7 +82,7 @@ const homeBanner = category.homeBanner;
 const homeEveryMood = category.homeEveryMood;
 const video = category.video;
   return (
-   <ProductContext.Provider value={{topProduct,category,inFocusPhoto,inFocusVideo,homeBanner,homeEveryMood,video,product}}>
+   <ProductContext.Provider value={{topProduct,category,filterCategory,inFocusPhoto,inFocusVideo,homeBanner,homeEveryMood,video,product}}>
     {children}
    </ProductContext.Provider>
   )
