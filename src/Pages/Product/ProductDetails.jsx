@@ -4,9 +4,9 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { LuShirt } from "react-icons/lu";
 import SimilarProduct from "../../Components/Product/SimilarProduct";
 import BasicModal from "../../Components/Product/BasicModal";
-import { useParams } from "react-router-dom";
-import { useContext,useEffect } from "react";
-import { ProductContext } from "../../Context/MyContext";
+import { useParams,useNavigate} from "react-router-dom";
+import { useContext,useEffect} from "react";
+import { ProductContext, UserContext } from "../../Context/MyContext";
 import {collection,onSnapshot,doc} from "firebase/firestore";
 import { db } from "../../Firebase/Firebase";
 const style = {
@@ -23,12 +23,16 @@ const style = {
   p: 4,
 };
 
+
 const ProductDetails = () => {
   const [productDetails,setProductDetails] = useState({});
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const {product} = useContext(ProductContext);
+  const {product,size,setSize} = useContext(ProductContext);
+  
+      const { currentuser} = useContext(UserContext);
+
   const { id } = useParams();
   console.log(id);
   useEffect(()=>{
@@ -47,6 +51,48 @@ const ProductDetails = () => {
        console.log(e);
     }
         },[id])
+
+const navigate = useNavigate();
+
+const handleCart = ()=>{
+  if(size){
+    const cart = {
+      userId:window.localStorage.getItem("UserId"),
+      quantity:1,
+      productId:productDetails.id,
+    }
+    console.log("log cart",cart);
+      if(currentuser){
+// its for login user
+    }else{
+    const cart = window.localStorage.getItem("goodies")?JSON.parse(window.localStorage.getItem("goodies")):[];
+    const check = cart?.find((c,i)=>(
+    c?.id === productDetails?.id
+    ));
+    if(check){
+      const cartUpdate = cart?.map((c,i)=>{
+      if(c?.id === productDetails?.id){
+      return {...c,quantity:c?.quantity+1,size}
+      }else{
+      return c;
+      }
+      })
+    window.localStorage.setItem("goodies",JSON.stringify(cartUpdate));
+
+    }else{
+        const notLoginUser = {...productDetails,quantity:1,size};
+    cart.push(notLoginUser);
+    window.localStorage.setItem("goodies",JSON.stringify(cart));
+    }
+
+    }
+
+  //  return navigate('/cart');
+  }else{
+
+    handleOpen();
+  }
+}
 
   return (
     <>
@@ -88,12 +134,12 @@ const ProductDetails = () => {
                 </div>
                 <div className="row DetailsBtn">
                   <button className="btn  py-2 sizeBtn" onClick={handleOpen}>
-                    SELECT SIZE{" "}
+                    {!size?"SELECT SIZE":size}
                     <MdKeyboardArrowDown color="black" fontSize={25} />
                   </button>
                 </div>
                 <div className="row DetailsBtn my-2">
-                  <button className="btn btn-dark py-2" onClick={handleOpen}>
+                  <button className="btn btn-dark py-2" onClick={handleCart}>
                     ADD TO BAG
                   </button>
                 </div>

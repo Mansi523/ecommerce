@@ -2,8 +2,28 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { useContext} from "react";
+import { ProductContext } from "../../Context/MyContext";
+import { useNavigate } from "react-router-dom";
+export default function BasicModal({ open, setOpen, handleClose,style,sizeUpdate,setSizeUpdate,handleUdpateCartSize}) {
+  
+  const{size,setSize} = useContext(ProductContext);
 
-export default function BasicModal({ open, setOpen, handleClose,style}) {
+  const navigate = useNavigate();
+
+  const handleSizeSelect =(s)=>{
+    setSize(s);
+  }
+
+  const HandleModalBag =()=>{
+  if(size){
+    return navigate('/cart');
+  }
+
+  }
+
+
+
   return (
     <div>
       <Modal
@@ -19,16 +39,20 @@ export default function BasicModal({ open, setOpen, handleClose,style}) {
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             <div className="d-flex flex-wrap">
-              <div className="box-1">XS</div>
-              <div className="box-1">S</div>
-              <div className="box-1">M</div>
-              <div className="box-1">L</div>
-              <div className="box-1">XL</div>
+              {
+                ["XS","S","M","L","XL"].map((s,i)=>(
+                  <div className="box-1" onClick={()=>handleSizeSelect(s)}
+                    style={{backgroundColor:size===s?"grey":"white",color:size === s?"white":"black"}}
+                  >{s}</div>
+                ))
+              }
+
+
             </div>
           </Typography>
           <hr />
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            <button className="btn btn-dark py-2">ADD TO BAG</button>
+            <button className="btn btn-dark py-2" onClick={()=>{HandleModalBag();handleUdpateCartSize()}}>{sizeUpdate?"UPDATE SIZE":"ADD TO BAG"}</button>
           </Typography>
         </Box>
       </Modal>

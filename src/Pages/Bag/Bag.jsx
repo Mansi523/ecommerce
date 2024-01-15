@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { GrCheckbox } from "react-icons/gr";
 import { IoIosHeartEmpty } from "react-icons/io";
 import Checkout from "../../Components/Checkout/Checkout";
@@ -7,6 +7,8 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import SimilarProduct from "../../Components/Product/SimilarProduct";
 import { useNavigate } from "react-router-dom";
 import "../../Style/Cart.css";
+import { useContext } from "react";
+import { UserContext,ProductContext } from "../../Context/MyContext";
 const style = {
   position: "absolute",
   top: "50%",
@@ -21,11 +23,71 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
 const Bag = () => {
   const [open, setOpen] = useState(false);
+  const [cart,setCart] = useState([]);
+  const [sizeUpdate,setSizeUpdate] = useState(null);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
+  const {currentuser} = useContext(UserContext);
+  const {size} = useContext(ProductContext);
+
+  useEffect(()=>{
+    if(currentuser){
+      // its for login user
+    }else{
+      const cartdata = JSON.parse(window.localStorage.getItem("goodies"));
+      setCart(cartdata);
+
+
+    }
+  },[])
+
+  const priceIn = (p,i)=>{
+  if(currentuser){
+    // for login user
+  }else{
+     const cartdata = cart.map((c)=>{
+      if(c.id === i){
+        if(c.quantity <=0){
+          return;
+        }
+        return {...c,quantity:p === "+" ? c.quantity+1 : c.quantity-1}
+      }
+      return c;
+     })
+     window.localStorage.setItem("goodies",JSON.stringify(cartdata));
+     setCart(cartdata);
+  }
+
+  }
+
+  const handleUpdateSize = (x)=>{
+    setSizeUpdate(x);
+    handleOpen();
+  }
+
+ const handleUdpateCartSize =()=>{
+    if(currentuser){
+      // for handle the login user
+    }
+    else{
+      const cartdata = cart.map((c)=>{
+        if(c.id === sizeUpdate.id){
+          if(c.quantity <=0){
+            return;
+          }
+          return {...c,size}
+        }
+        return c;
+       })
+       window.localStorage.setItem("goodies",JSON.stringify(cartdata));
+       setCart(cartdata);
+       handleClose();
+    }
+    }
 
   return (
     <>
@@ -64,7 +126,7 @@ const Bag = () => {
                 </div>
               </div>
               <div className="row mt-4">
-                {[1, 2, 3, 4].map((x, i) => (
+                {cart.map((x, i) => (
                   <div className="cartShow my-2" key={i}>
                     <div className="cartSelect">
                       <span>
@@ -73,8 +135,8 @@ const Bag = () => {
                     </div>
                     <div className="cartImage px-2 ">
                       <img
-                        src="https://img101.urbanic.com/v1/goods-pic/314b993d3033447f9428dbca2cc94548UR_w1440_q90.webp"
-                        alt=""
+                        src={x?.photo?.url}
+                        alt={x?.name}
                         className="bg-dark"
                       />
                     </div>
@@ -85,25 +147,25 @@ const Bag = () => {
                       <div className="row ">
                         <div className="cartPrice">
                           <div className="cartProductName">
-                            <p>Ruffle Cocktail Dress</p>
-                            <p onClick={handleOpen}>
-                              <b>M</b>
+                            <p>{x.name}</p>
+                            <p onClick={()=>handleUpdateSize(x)}>
+                              <b>{x.size}</b>
                               <MdKeyboardArrowDown
                                 color="black"
                                 fontSize={25}
                               />
                             </p>
                           </div>
-                          <div className="">₹3,690</div>
+                          <div className="">₹{x.price}</div>
                           <div className="cartInc ">
                             <div className="text-center noneInitially">
-                              <span className="decCart">-</span>
+                              <span className="decCart" onClick={()=>priceIn("-",x.id)}>-</span>
                             </div>
                             <div className="text-center numberCart noneInitially">
-                              <span>6</span>
+                              <span>{x.quantity}</span>
                             </div>
                             <div className="text-center showAllDiv">
-                              <span className="incCart">+</span>
+                              <span className="incCart" onClick={()=>priceIn("+",x.id)}>+</span>
                             </div>
                           </div>
                         </div>
@@ -127,6 +189,9 @@ const Bag = () => {
         setOpen={setOpen}
         handleClose={handleClose}
         handleOpen={handleClose}
+        setSizeUpdate = {setSizeUpdate}
+        sizeUpdate = {sizeUpdate}
+        handleUdpateCartSize={handleUdpateCartSize}
         style={style}
       />
     </>

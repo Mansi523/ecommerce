@@ -91,7 +91,6 @@ const Product = () => {
   }
 
   const handleCategoryFilter = (value)=>{
-    console.log("print karo value",value);
     const data = product.filter((p,i)=>(
     p?.categoriesName?.id === value.id
     && p.price <= price
