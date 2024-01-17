@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useContext,useEffect,useState} from "react";
 import { ProductContext } from "../../Context/MyContext";
 const SimilarProduct = ({id:catId}) => {
+  console.log("id for category for checkout",catId );
   const navigate = useNavigate();
   const { id } = useParams();
   const [similarProduct,setSimilarProduct] = useState([]);

@@ -70,7 +70,7 @@ const UserProvider = ({ children }) => {
         setLoader(false);
       } else {
         setCurrentUser(null);
-        setLoader(false);
+        // setLoader(false);
       }
     });
 
@@ -173,7 +173,7 @@ setLoader(true);
       .then((userCredential) => {
         const user = userCredential.user;
         // window.localStorage.setItem("userlogin",JSON.stringify(userCredential));
-        // window.localStorage.setItem("UserId",JSON.stringify(user.uid));
+        window.localStorage.setItem("UserId",JSON.stringify(user.uid));
    
 setLoader(false);
 toast('Loged in Successfully!',

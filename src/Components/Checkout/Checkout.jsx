@@ -3,7 +3,7 @@ import { LiaShippingFastSolid } from "react-icons/lia";
 import { HiOutlineCreditCard } from "react-icons/hi2";
 import { PiKeyReturnBold } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
-const Checkout = () => {
+const Checkout = ({cart, totalPrice}) => {
   const navigate = useNavigate();
   return (
     <div className="container-fluid  ">
@@ -16,7 +16,7 @@ const Checkout = () => {
                 <span>Total MRP</span>
               </div>
               <div>
-                <span>₹36,900</span>
+                <span>₹{totalPrice}</span>
               </div>
             </div>
           </div>
@@ -26,12 +26,12 @@ const Checkout = () => {
                 <span>Total Amount</span>
               </div>
               <div>
-                <span>₹36,900</span>
+                <span>₹{totalPrice}</span>
               </div>
             </div>
           </div>
           <div className="row m-auto py-4">
-            <button className="btn btn-dark" onClick={()=>navigate('/checkout')}>CHECKOUT(10)</button>
+            <button className="btn btn-dark" onClick={()=>navigate('/checkout')}>CHECKOUT({cart?.length? cart?.length :0})</button>
             <p className="pt-3">
               Do you have a discount coupon? Add in the next step.
             </p>

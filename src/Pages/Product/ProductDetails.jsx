@@ -79,7 +79,8 @@ const handleCart = ()=>{
       })
     window.localStorage.setItem("goodies",JSON.stringify(cartUpdate));
 
-    }else{
+    }
+    else{
         const notLoginUser = {...productDetails,quantity:1,size};
     cart.push(notLoginUser);
     window.localStorage.setItem("goodies",JSON.stringify(cart));
@@ -87,7 +88,7 @@ const handleCart = ()=>{
 
     }
 
-  //  return navigate('/cart');
+   return navigate('/cart');
   }else{
 
     handleOpen();
@@ -162,6 +163,7 @@ const handleCart = ()=>{
         handleClose={handleClose}
         handleOpen={handleClose}
         style={style}
+        productDetails={productDetails}
       />
       <SimilarProduct 
         id={productDetails?.categoriesName?.id}

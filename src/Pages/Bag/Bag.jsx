@@ -7,7 +7,9 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import SimilarProduct from "../../Components/Product/SimilarProduct";
 import { useNavigate } from "react-router-dom";
 import "../../Style/Cart.css";
+import { AiOutlineDelete } from "react-icons/ai";
 import { useContext } from "react";
+import { IoBagOutline } from "react-icons/io5";
 import { UserContext,ProductContext } from "../../Context/MyContext";
 const style = {
   position: "absolute",
@@ -33,6 +35,8 @@ const Bag = () => {
   const navigate = useNavigate();
   const {currentuser} = useContext(UserContext);
   const {size} = useContext(ProductContext);
+  const [totalPrice,setTotalPrice] = useState(0);
+  const [catId,setCatId] = useState("");
 
   useEffect(()=>{
     if(currentuser){
@@ -45,11 +49,18 @@ const Bag = () => {
     }
   },[])
 
+useEffect(()=>{
+const price = cart?.reduce((a,{price})=>a+Number(price),0);
+const id = cart[cart?.length-1]?.categoriesName?.id;
+setCatId(id);
+setTotalPrice(price);
+},[cart])
+
   const priceIn = (p,i)=>{
   if(currentuser){
     // for login user
   }else{
-     const cartdata = cart.map((c)=>{
+     const cartdata = cart?.map((c)=>{
       if(c.id === i){
         if(c.quantity <=0){
           return;
@@ -74,7 +85,7 @@ const Bag = () => {
       // for handle the login user
     }
     else{
-      const cartdata = cart.map((c)=>{
+      const cartdata = cart?.map((c)=>{
         if(c.id === sizeUpdate.id){
           if(c.quantity <=0){
             return;
@@ -86,8 +97,22 @@ const Bag = () => {
        window.localStorage.setItem("goodies",JSON.stringify(cartdata));
        setCart(cartdata);
        handleClose();
+       setSizeUpdate(null);
     }
     }
+
+const handleProductDelete = (id)=>{
+if(currentuser){
+  // for login user
+}else{
+  const data = cart?.filter((p)=>(
+    p.id !== id
+))
+window.localStorage.setItem("goodies",JSON.stringify(data));
+setCart(data);
+}
+
+}
 
   return (
     <>
@@ -110,7 +135,7 @@ const Bag = () => {
                       <span>
                         <GrCheckbox fontSize={23} />
                       </span>
-                      <span className="mx-3">My Bag (7)</span>
+                      <span className="mx-3">My Bag ({cart?.length ? cart?.length : 0})</span>
                     </div>
 
                     <div
@@ -125,9 +150,20 @@ const Bag = () => {
                   </div>
                 </div>
               </div>
+       {!cart?.length && <div className="row text-center my-5">
+  <div className="row">
+
+    <span><IoBagOutline fontSize={30}/></span>
+    <h5 className=" mt-2 mb-5">Your shopping bag is empty</h5>
+    <button className="btn btn-dark w-50 m-auto" onClick={()=>navigate('/')}>Start Shopping</button>
+  </div>
+</div>}
+
+
+
               <div className="row mt-4">
-                {cart.map((x, i) => (
-                  <div className="cartShow my-2" key={i}>
+                {cart?.map((x, i) => (
+                  <div className="cartShow my-2" key={x?.id}>
                     <div className="cartSelect">
                       <span>
                         <GrCheckbox fontSize={23} />
@@ -147,25 +183,25 @@ const Bag = () => {
                       <div className="row ">
                         <div className="cartPrice">
                           <div className="cartProductName">
-                            <p>{x.name}</p>
+                            <p>{x?.name}</p>
                             <p onClick={()=>handleUpdateSize(x)}>
-                              <b>{x.size}</b>
+                              <b>{x?.size}</b>
                               <MdKeyboardArrowDown
                                 color="black"
                                 fontSize={25}
                               />
                             </p>
                           </div>
-                          <div className="">₹{x.price}</div>
+                          <div className="">₹{x?.price}</div>
                           <div className="cartInc ">
                             <div className="text-center noneInitially">
-                              <span className="decCart" onClick={()=>priceIn("-",x.id)}>-</span>
+                              <span className={`decCart ${x?.quantity > 1 ? 'mb-1' : ''}`}  onClick={()=>{x?.quantity === 1?handleProductDelete(x?.id):priceIn("-",x?.id)}}>{x?.quantity === 1?<AiOutlineDelete className="mb-2" fontSize={17} />:"-"}</span>
                             </div>
                             <div className="text-center numberCart noneInitially">
-                              <span>{x.quantity}</span>
+                              <span>{x?.quantity}</span>
                             </div>
                             <div className="text-center showAllDiv">
-                              <span className="incCart" onClick={()=>priceIn("+",x.id)}>+</span>
+                              <span className="incCart mb-1" onClick={()=>priceIn("+",x?.id)} >+</span>
                             </div>
                           </div>
                         </div>
@@ -176,11 +212,16 @@ const Bag = () => {
               </div>
             </div>
             <div className="col-md-5">
-              <Checkout />
+              <Checkout 
+              totalPrice={totalPrice}
+              cart={cart}
+              />
             </div>
           </div>
           <div className="row">
-            <SimilarProduct />
+            <SimilarProduct 
+                   id={catId}
+            />
           </div>
         </div>
       </div>
