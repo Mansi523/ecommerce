@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { UserContext } from "./MyContext";
 import { app, db, auth } from "../Firebase/Firebase";
 import {signOut, sendPasswordResetEmail , getAuth,signInWithPopup,GoogleAuthProvider,createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { collection, addDoc,doc,updateDoc,arrayUnion,getDoc, arrayRemove} from "firebase/firestore";
+import { collection,getDocs,  query, where,addDoc,doc,updateDoc,arrayUnion,getDoc, arrayRemove} from "firebase/firestore";
 import toast, { Toaster } from "react-hot-toast";
 const UserProvider = ({ children }) => {
   const [name, setName] = useState("");
@@ -82,16 +82,19 @@ const handleGoggleLogin =async()=>{
 const provider = new GoogleAuthProvider();
 try{
 const result = await signInWithPopup(auth, provider)
-  // .then((result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    // The signed-in user info.
-    const user = result.user;
 
-    // IdP data available using getAdditionalUserInfo(result)
-    // ...
-    // console.log("user",user);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    // const token = credential.accessToken;
+
+    const user = result.user;
+    const citiesRef = collection(db, "users");
+    
+    const q = query(citiesRef, where("userId", "==", 
+    user.uid));
+
+    const querySnapshot = await getDocs(q);
+  const check = querySnapshot?.docChanges();
+   if(check.length === 0){
     try {
       const docRef = await addDoc(collection(db, "users"), {
         name:user.displayName,
@@ -134,8 +137,13 @@ const result = await signInWithPopup(auth, provider)
       }
     );
     }
+   }else{
+    console.log("already register");
+   }
 
-}catch(error) {
+
+}
+catch(error) {
     // Handle Errors here.
     console.log(error);
     const errorCode = error.code;
