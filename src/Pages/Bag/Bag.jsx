@@ -120,7 +120,7 @@ setCart(data);
   return (
     <>
       <div className="bag">
-        <h1>hello cart</h1>
+   
         <div className="container-fluid mt-5">
           <div className="row">
             <div className="col-md-7 ">
