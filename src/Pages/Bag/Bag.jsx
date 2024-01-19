@@ -27,13 +27,13 @@ const style = {
 };
 
 const Bag = () => {
+  const {currentuser} = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [cart,setCart] = useState([]);
   const [sizeUpdate,setSizeUpdate] = useState(null);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
-  const {currentuser} = useContext(UserContext);
   const {size} = useContext(ProductContext);
   const [totalPrice,setTotalPrice] = useState(0);
   const [catId,setCatId] = useState("");
@@ -46,7 +46,7 @@ const Bag = () => {
     if(currentuser){
       // its for login user
     }else{
-      const cartdata = JSON.parse(window.localStorage.getItem("goodies"));
+      const cartdata = JSON.parse(window.localStorage.getItem("goodies")) || [];
       setCart(cartdata);
     }
   },[currentuser])
