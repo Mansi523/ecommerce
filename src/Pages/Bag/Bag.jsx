@@ -38,86 +38,86 @@ const Bag = () => {
   const [totalPrice,setTotalPrice] = useState(0);
   const [catId,setCatId] = useState("");
 
-  const handleUserCheck =()=>{
+//   const handleUserCheck =()=>{
 
-  }
+//   }
 
-  useEffect(()=>{
-    if(currentuser){
-      // its for login user
+//   useEffect(()=>{
+//     if(currentuser){
+//       // its for login user
       
-    }else{
-      const cartdata = JSON.parse(window.localStorage.getItem("goodies"));
-      setCart(cartdata);
+//     }else{
+//       const cartdata = JSON.parse(window.localStorage.getItem("goodies"));
+//       setCart(cartdata);
 
 
-    }
-  },[])
+//     }
+//   },[])
 
-useEffect(()=>{
-const price = cart?.reduce((a,{price})=>a+Number(price),0);
-const id = cart[cart?.length-1]?.categoriesName?.id;
-setCatId(id);
-setTotalPrice(price);
-},[cart])
+// useEffect(()=>{
+// const price = cart?.reduce((a,{price})=>a+Number(price),0);
+// const id = cart[cart?.length-1]?.categoriesName?.id;
+// setCatId(id);
+// setTotalPrice(price);
+// },[cart])
 
-  const priceIn = (p,i)=>{
-  if(currentuser){
-    // for login user
-  }else{
-     const cartdata = cart?.map((c)=>{
-      if(c.id === i){
-        if(c.quantity <=0){
-          return;
-        }
-        return {...c,quantity:p === "+" ? c.quantity+1 : c.quantity-1}
-      }
-      return c;
-     })
-     window.localStorage.setItem("goodies",JSON.stringify(cartdata));
-     setCart(cartdata);
-  }
+//   const priceIn = (p,i)=>{
+//   if(currentuser){
+//     // for login user
+//   }else{
+//      const cartdata = cart?.map((c)=>{
+//       if(c.id === i){
+//         if(c.quantity <=0){
+//           return;
+//         }
+//         return {...c,quantity:p === "+" ? c.quantity+1 : c.quantity-1}
+//       }
+//       return c;
+//      })
+//      window.localStorage.setItem("goodies",JSON.stringify(cartdata));
+//      setCart(cartdata);
+//   }
 
-  }
+//   }
 
-  const handleUpdateSize = (x)=>{
-    setSizeUpdate(x);
-    handleOpen();
-  }
+//   const handleUpdateSize = (x)=>{
+//     setSizeUpdate(x);
+//     handleOpen();
+//   }
 
- const handleUdpateCartSize =()=>{
-    if(currentuser){
-      // for handle the login user
-    }
-    else{
-      const cartdata = cart?.map((c)=>{
-        if(c.id === sizeUpdate.id){
-          if(c.quantity <=0){
-            return;
-          }
-          return {...c,size}
-        }
-        return c;
-       })
-       window.localStorage.setItem("goodies",JSON.stringify(cartdata));
-       setCart(cartdata);
-       handleClose();
-       setSizeUpdate(null);
-    }
-    }
+//  const handleUdpateCartSize =()=>{
+//     if(currentuser){
+//       // for handle the login user
+//     }
+//     else{
+//       const cartdata = cart?.map((c)=>{
+//         if(c.id === sizeUpdate.id){
+//           if(c.quantity <=0){
+//             return;
+//           }
+//           return {...c,size}
+//         }
+//         return c;
+//        })
+//        window.localStorage.setItem("goodies",JSON.stringify(cartdata));
+//        setCart(cartdata);
+//        handleClose();
+//        setSizeUpdate(null);
+//     }
+//     }
 
-const handleProductDelete = (id)=>{
-if(currentuser){
-  // for login user
-}else{
-  const data = cart?.filter((p)=>(
-    p.id !== id
-))
-window.localStorage.setItem("goodies",JSON.stringify(data));
-setCart(data);
-}
+// const handleProductDelete = (id)=>{
+// if(currentuser){
+//   // for login user
+// }else{
+//   const data = cart?.filter((p)=>(
+//     p.id !== id
+// ))
+// window.localStorage.setItem("goodies",JSON.stringify(data));
+// setCart(data);
+// }
 
-}
+// }
 
   return (
     <>
@@ -231,7 +231,7 @@ setCart(data);
           </div>
         </div> */}
       </div>
-      <BasicModal
+      {/* <BasicModal
         open={open}
         setOpen={setOpen}
         handleClose={handleClose}
@@ -240,7 +240,7 @@ setCart(data);
         sizeUpdate = {sizeUpdate}
         handleUdpateCartSize={handleUdpateCartSize}
         style={style}
-      />
+      /> */}
     </>
   );
 };
