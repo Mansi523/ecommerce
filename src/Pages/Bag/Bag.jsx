@@ -11,6 +11,9 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { useContext } from "react";
 import { IoBagOutline } from "react-icons/io5";
 import { UserContext,ProductContext } from "../../Context/MyContext";
+import { db } from "../../Firebase/Firebase";
+import { addDoc,collection,onSnapshot } from "firebase/firestore";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -27,6 +30,7 @@ const style = {
 };
 
 const Bag = () => {
+  const user = window.localStorage.getItem("August");
   const {currentuser} = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [cart,setCart] = useState([]);
@@ -42,14 +46,31 @@ const Bag = () => {
 
   }
 
-  useEffect(()=>{
-    if(currentuser){
-      // its for login user
-    }else{
+  // useEffect(()=>{
+  //   try{
+  //     onSnapshot(collection(db, "carts"), (snapshot) => {
+  //           const data = snapshot.docs.map((doc)=>{
+  //             return {
+  //               ...doc.data(),
+  //               id:doc.id,
+  //             }
+  //           })
+  //           console.log(data[0]?.cart?.details,"101");
+  //      setCart(data[0]?.cart?.details);       
+      
+  //         });
+  //   }catch(e){
+  //      console.log(e);
+  //   }
+  //       },[])
+
+  useEffect(() => {
+    if (user) {
+    } else  {
       const cartdata = JSON.parse(window.localStorage.getItem("goodies")) || [];
       setCart(cartdata);
     }
-  },[currentuser])
+  }, [user]);
 
 useEffect(()=>{
 const price = cart?.reduce((a,{price})=>a+Number(price),0);
@@ -59,7 +80,7 @@ setTotalPrice(price);
 },[cart])
 
   const priceIn = (p,i)=>{
-  if(currentuser){
+  if(user){
     // for login user
   }else{
      const cartdata = cart?.map((c)=>{
@@ -67,7 +88,10 @@ setTotalPrice(price);
         if(c.quantity <=0){
           return;
         }
-        return {...c,quantity:p === "+" ? c.quantity+1 : c.quantity-1}
+        console.log("ACTUALPRICE",c?.actualPrice);
+        return {...c,quantity:p === "+" ? c.quantity+1 : c.quantity-1,
+        price: p === "+" ? Number(c?.actualPrice)*Number(c?.quantity+1) : Number(c?.price)-Number(c?.actualPrice),
+      }
       }
       return c;
      })
@@ -83,7 +107,7 @@ setTotalPrice(price);
   }
 
  const handleUdpateCartSize =()=>{
-    if(currentuser){
+    if(user){
       // for handle the login user
     }
     else{
@@ -104,7 +128,7 @@ setTotalPrice(price);
     }
 
 const handleProductDelete = (id)=>{
-if(currentuser){
+if(user){
   // for login user
 }else{
   const data = cart?.filter((p)=>(
@@ -237,6 +261,7 @@ setCart(data);
         sizeUpdate = {sizeUpdate}
         handleUdpateCartSize={handleUdpateCartSize}
         style={style}
+        user={user}
       />
     </>
   );

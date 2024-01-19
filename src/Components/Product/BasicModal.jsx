@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import { useContext} from "react";
 import { ProductContext } from "../../Context/MyContext";
 import { useNavigate } from "react-router-dom";
-export default function BasicModal({ open, setOpen, productDetails,handleClose,style,sizeUpdate,setSizeUpdate,handleUdpateCartSize}) {
+export default function BasicModal({ open,user, setOpen, productDetails,handleClose,style,sizeUpdate,setSizeUpdate,handleUdpateCartSize}) {
   
   const{size,setSize} = useContext(ProductContext);
 
