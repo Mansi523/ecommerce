@@ -33,7 +33,7 @@ const Bag = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
-  const {currentuser} = useContext(UserContext);
+  const {loader} = useContext(UserContext);
   const {size} = useContext(ProductContext);
   const [totalPrice,setTotalPrice] = useState(0);
   const [catId,setCatId] = useState("");
@@ -42,17 +42,15 @@ const Bag = () => {
 
   }
 
-  // useEffect(()=>{
-  //   if(currentuser){
-  //     // its for login user
+  useEffect(()=>{
+    if(loader){
+      // its for login user
       
-  //   }else{
-  //     const cartdata = JSON.parse(window.localStorage.getItem("goodies"));
-  //     setCart(cartdata);
-
-
-  //   }
-  // },[])
+    }else{
+      const cartdata = JSON.parse(window.localStorage.getItem("goodies"));
+      setCart(cartdata);
+    }
+  },[])
 
 useEffect(()=>{
 const price = cart?.reduce((a,{price})=>a+Number(price),0);
@@ -62,7 +60,7 @@ setTotalPrice(price);
 },[cart])
 
   const priceIn = (p,i)=>{
-  if(currentuser){
+  if(loader){
     // for login user
   }else{
      const cartdata = cart?.map((c)=>{
@@ -86,7 +84,7 @@ setTotalPrice(price);
   }
 
  const handleUdpateCartSize =()=>{
-    if(currentuser){
+    if(loader){
       // for handle the login user
     }
     else{
@@ -107,7 +105,7 @@ setTotalPrice(price);
     }
 
 const handleProductDelete = (id)=>{
-if(currentuser){
+if(loader){
   // for login user
 }else{
   const data = cart?.filter((p)=>(
