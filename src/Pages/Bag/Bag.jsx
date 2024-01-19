@@ -33,7 +33,7 @@ const Bag = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
-  const {loader} = useContext(UserContext);
+  const {currentuser} = useContext(UserContext);
   const {size} = useContext(ProductContext);
   const [totalPrice,setTotalPrice] = useState(0);
   const [catId,setCatId] = useState("");
@@ -43,12 +43,14 @@ const Bag = () => {
   }
 
   useEffect(()=>{
-    if(loader){
+    if(Object.keys(currentuser).length !== 0){
       // its for login user
       
     }else{
       const cartdata = JSON.parse(window.localStorage.getItem("goodies"));
       setCart(cartdata);
+
+
     }
   },[])
 
@@ -60,7 +62,7 @@ setTotalPrice(price);
 },[cart])
 
   const priceIn = (p,i)=>{
-  if(loader){
+  if(currentuser){
     // for login user
   }else{
      const cartdata = cart?.map((c)=>{
@@ -84,7 +86,7 @@ setTotalPrice(price);
   }
 
  const handleUdpateCartSize =()=>{
-    if(loader){
+    if(currentuser){
       // for handle the login user
     }
     else{
@@ -105,7 +107,7 @@ setTotalPrice(price);
     }
 
 const handleProductDelete = (id)=>{
-if(loader){
+if(currentuser){
   // for login user
 }else{
   const data = cart?.filter((p)=>(
@@ -120,7 +122,7 @@ setCart(data);
   return (
     <>
       <div className="bag">
-   
+        {/* <h1>hello cart</h1> */}
         <div className="container-fluid mt-5">
           <div className="row">
             <div className="col-md-7 ">

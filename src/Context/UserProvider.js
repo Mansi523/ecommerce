@@ -10,7 +10,7 @@ const UserProvider = ({ children }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [currentuser, setCurrentUser] = useState(null);
+  const [currentuser, setCurrentUser] = useState({});
   const [heading,setheading] = useState("All");
   const [loader,setLoader] = useState(false);
   const [Modal,setModal] = useState(false);
@@ -69,7 +69,7 @@ const UserProvider = ({ children }) => {
         window.localStorage.setItem("August",JSON.stringify(user));        
         setLoader(false);
       } else {
-        setCurrentUser(null);
+        setCurrentUser({});
         // setLoader(false);
       }
     });
