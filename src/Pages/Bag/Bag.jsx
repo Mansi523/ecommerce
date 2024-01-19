@@ -38,9 +38,14 @@ const Bag = () => {
   const [totalPrice,setTotalPrice] = useState(0);
   const [catId,setCatId] = useState("");
 
+  const handleUserCheck =()=>{
+
+  }
+
   useEffect(()=>{
     if(currentuser){
       // its for login user
+      
     }else{
       const cartdata = JSON.parse(window.localStorage.getItem("goodies"));
       setCart(cartdata);
@@ -117,7 +122,8 @@ setCart(data);
   return (
     <>
       <div className="bag">
-        <div className="container-fluid mt-5">
+        <h1>hello cart</h1>
+        {/* <div className="container-fluid mt-5">
           <div className="row">
             <div className="col-md-7 ">
               <div className="row cartHeading p-3 mx-3">
@@ -223,7 +229,7 @@ setCart(data);
                    id={catId}
             />
           </div>
-        </div>
+        </div> */}
       </div>
       <BasicModal
         open={open}
