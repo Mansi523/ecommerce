@@ -43,14 +43,11 @@ const Bag = () => {
   }
 
   useEffect(()=>{
-    if(Object.keys(currentuser).length !== 0){
+    if(currentuser){
       // its for login user
-      
     }else{
       const cartdata = JSON.parse(window.localStorage.getItem("goodies"));
       setCart(cartdata);
-
-
     }
   },[currentuser])
 
