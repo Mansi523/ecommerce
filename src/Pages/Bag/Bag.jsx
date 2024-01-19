@@ -52,7 +52,7 @@ const Bag = () => {
 
 
     }
-  },[])
+  },[currentuser])
 
 useEffect(()=>{
 const price = cart?.reduce((a,{price})=>a+Number(price),0);
