@@ -7,7 +7,7 @@ import BasicModal from "../../Components/Product/BasicModal";
 import { useParams,useNavigate} from "react-router-dom";
 import { useContext,useEffect} from "react";
 import { ProductContext, UserContext } from "../../Context/MyContext";
-import {collection,onSnapshot,doc,addDoc} from "firebase/firestore";
+import {collection,onSnapshot,addDoc,where,query,getDocs,doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Firebase/Firebase";
 
 const style = {
@@ -26,18 +26,20 @@ const style = {
 
 
 const ProductDetails = () => {
-  const user = window.localStorage.getItem("August");
+  const user = JSON.parse(window.localStorage.getItem("August"));
   const [productDetails,setProductDetails] = useState({});
   const [open, setOpen] = useState(false);
   const [cartData,setCartData] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [loading,setLoading] = useState();
   const {product,size,setSize} = useContext(ProductContext);
   
       const { currentuser} = useContext(UserContext);
 
   const { id } = useParams();
   console.log(id);
+
   useEffect(()=>{
     try{
       onSnapshot(doc(db, "product",id), (snapshot) => {
@@ -45,6 +47,7 @@ const ProductDetails = () => {
             const data= {
              ...snapshot.data(),
              id:snapshot.id,
+            
             }
             setProductDetails(data);
             console.log("#######",data);
@@ -57,42 +60,39 @@ const ProductDetails = () => {
 
 const navigate = useNavigate();
 
-// useEffect(()=>{
-// if(user){
-//   setCartData(JSON.parse(window.localStorage.getItem("goodies")));
-//   const data = JSON.parse(window.localStorage.getItem("goodies"));
-//   data.forEach (async(c)=> {
-//     const docRef = await addDoc(collection(db, "carts"), {
-//       c,
-//     });
-//     console.log("")
-//   });
-//   window.localStorage.removeItem("goodies");
-// }
-// },[])
 
 const handleCart = async()=>{
   const userId = window.localStorage.getItem("UserId");
   if(size){
-    const cart = {
-      userId,
-      quantity:1,
-      size,
-      actualPrice:productDetails?.price,
-      productId:productDetails?.id,
-      details:productDetails,
-    }
-    console.log("log cart",cart);
+
       if(user){
-// its for login user
-const docRef = await addDoc(collection(db, "carts"), {
-  cart,
+        const citiesRef = collection(db, "carts");
+    
+        const q = query(citiesRef, where("id", "==", 
+        productDetails?.id));
+    
+        const querySnapshot = await getDocs(q);
+      const check = querySnapshot?.docChanges();
+  if(check.length === 0){
+    const docRef = await addDoc(collection(db, "carts"), {
+      ...productDetails,size,userId:user?.uid,status:true,
+      qty: 1, 
+    });
+  }
+  else{
+console.log("already added");
+console.log(check[0]?.doc?.id,"check123");
+const cartid = check[0]?.doc?.id;
+const washingtonRef = doc(db, "carts", cartid);
+const total = Number(productDetails?.qty)+1;
+console.log("total",total);
+await updateDoc(washingtonRef, {
+  qty:total,
+  size,
 });
-  setCartData(JSON.parse(window.localStorage.getItem("goodies")));
-
-  window.localStorage.removeItem("goodies");
-
-    }else{
+  }
+    }
+    else{
     const cart = window.localStorage.getItem("goodies")?JSON.parse(window.localStorage.getItem("goodies")):[];
     const check = cart?.find((c,i)=>(
     c?.id === productDetails?.id
@@ -100,7 +100,7 @@ const docRef = await addDoc(collection(db, "carts"), {
     if(check){
       const cartUpdate = cart?.map((c,i)=>{
       if(c?.id === productDetails?.id){
-      return {...c,quantity:c?.quantity+1,size}
+      return {...c,qty:Number(c?.qty)+1,size}
       }else{
       return c;
       }
@@ -109,9 +109,7 @@ const docRef = await addDoc(collection(db, "carts"), {
 
     }
     else{
-        const notLoginUser = {...productDetails,quantity:1,size,actualPrice:productDetails.price,
-      productId:productDetails.id,
-      userId,
+        const notLoginUser = {...productDetails,size,status:true,
         };
     cart.push(notLoginUser);
     window.localStorage.setItem("goodies",JSON.stringify(cart));

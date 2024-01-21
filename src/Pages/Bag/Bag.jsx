@@ -12,7 +12,8 @@ import { useContext } from "react";
 import { IoBagOutline } from "react-icons/io5";
 import { UserContext,ProductContext } from "../../Context/MyContext";
 import { db } from "../../Firebase/Firebase";
-import { addDoc,collection,onSnapshot } from "firebase/firestore";
+import { addDoc,collection,onSnapshot,doc,updateDoc, query, where, getDocs ,deleteDoc } from "firebase/firestore";
+import { TbSquareRounded, TbSquareRoundedCheckFilled} from "react-icons/tb";
 
 const style = {
   position: "absolute",
@@ -30,7 +31,7 @@ const style = {
 };
 
 const Bag = () => {
-  const user = window.localStorage.getItem("August");
+  const user = JSON.parse(window.localStorage.getItem("August"));
   const {currentuser} = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [cart,setCart] = useState([]);
@@ -41,28 +42,34 @@ const Bag = () => {
   const {size} = useContext(ProductContext);
   const [totalPrice,setTotalPrice] = useState(0);
   const [catId,setCatId] = useState("");
-
+ const [cartUpdate,setCartUpdate] = useState(false);
   const handleUserCheck =()=>{
 
   }
 
-  // useEffect(()=>{
-  //   try{
-  //     onSnapshot(collection(db, "carts"), (snapshot) => {
-  //           const data = snapshot.docs.map((doc)=>{
-  //             return {
-  //               ...doc.data(),
-  //               id:doc.id,
-  //             }
-  //           })
-  //           console.log(data[0]?.cart?.details,"101");
-  //      setCart(data[0]?.cart?.details);       
-      
-  //         });
-  //   }catch(e){
-  //      console.log(e);
-  //   }
-  //       },[])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+
+        if (user) {
+        console.log("user.uid",user.uid);
+          const q = query(collection(db, 'carts'), where('userId', '==', user?.uid));
+          const querySnapshot = await getDocs(q);
+          const data = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            cartid: doc.id,
+          }));
+          console.log('<<<<<<<<<<<<<<<', data);
+          setCart(data);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchData();
+
+  }, [cartUpdate]); 
 
   useEffect(() => {
     if (user) {
@@ -73,24 +80,32 @@ const Bag = () => {
   }, [user]);
 
 useEffect(()=>{
-const price = cart?.reduce((a,{price})=>a+Number(price),0);
+
+  const price = cart?.reduce((a,{price})=>a+Number(price),0);
 const id = cart[cart?.length-1]?.categoriesName?.id;
 setCatId(id);
 setTotalPrice(price);
-},[cart])
 
-  const priceIn = (p,i)=>{
+},[cart,cartUpdate])
+
+  const priceIn = async(p,i,x)=>{
   if(user){
     // for login user
+    const washingtonRef = doc(db, "carts",x?.cartid);
+    await updateDoc(washingtonRef, {
+      qty:p === "+" ? Number(x.qty)+1 : Number(x.qty)-1,
+       price: p === "+" ? Number(x?.actualPrice)*Number(x?.qty+1) : Number(x?.price)-Number(x?.actualPrice),
+    });
+    setCartUpdate(!cartUpdate);
   }else{
      const cartdata = cart?.map((c)=>{
       if(c.id === i){
-        if(c.quantity <=0){
+        if(c.qty <=0){
           return;
         }
         console.log("ACTUALPRICE",c?.actualPrice);
-        return {...c,quantity:p === "+" ? c.quantity+1 : c.quantity-1,
-        price: p === "+" ? Number(c?.actualPrice)*Number(c?.quantity+1) : Number(c?.price)-Number(c?.actualPrice),
+        return {...c,qty:p === "+" ? Number(c.qty)+1 : Number(c.qty)-1,
+        price: p === "+" ? Number(c?.actualPrice)*Number(c?.qty+1) : Number(c?.price)-Number(c?.actualPrice),
       }
       }
       return c;
@@ -106,14 +121,22 @@ setTotalPrice(price);
     handleOpen();
   }
 
- const handleUdpateCartSize =()=>{
+ const handleUdpateCartSize =async()=>{
+
     if(user){
       // for handle the login user
+      const washingtonRef = doc(db, "carts", sizeUpdate?.cartid);
+      await updateDoc(washingtonRef, {
+        size,
+      });
+    setCartUpdate(!cartUpdate);
+      handleClose();
+      setSizeUpdate(null);
     }
     else{
       const cartdata = cart?.map((c)=>{
         if(c.id === sizeUpdate.id){
-          if(c.quantity <=0){
+          if(c.qty <=0){
             return;
           }
           return {...c,size}
@@ -127,9 +150,11 @@ setTotalPrice(price);
     }
     }
 
-const handleProductDelete = (id)=>{
+const handleProductDelete = async(id,x)=>{
 if(user){
   // for login user
+  await deleteDoc(doc(db, "carts", x?.cartid));
+  setCartUpdate(!cartUpdate);
 }else{
   const data = cart?.filter((p)=>(
     p.id !== id
@@ -138,6 +163,14 @@ window.localStorage.setItem("goodies",JSON.stringify(data));
 setCart(data);
 }
 
+}
+
+const handleStatusUpdate =async(x)=>{
+  const washingtonRef = doc(db, "carts", x?.cartid);
+  await updateDoc(washingtonRef, {
+    status:!x?.status,
+  });
+setCartUpdate(!cartUpdate);
 }
 
   return (
@@ -160,7 +193,7 @@ setCart(data);
                       onClick={() => navigate("/cart")}
                     >
                       <span>
-                        <GrCheckbox fontSize={23} />
+                      <TbSquareRoundedCheckFilled fontSize={23} />
                       </span>
                       <span className="mx-3">My Bag ({cart?.length ? cart?.length : 0})</span>
                     </div>
@@ -192,8 +225,9 @@ setCart(data);
                 {cart?.map((x, i) => (
                   <div className="cartShow my-2" key={x?.id}>
                     <div className="cartSelect">
-                      <span>
-                        <GrCheckbox fontSize={23} />
+                      <span onClick={()=>handleStatusUpdate(x)}>
+                        {x?.status?<TbSquareRoundedCheckFilled fontSize={23} />:<TbSquareRounded  fontSize={23} />}
+                        
                       </span>
                     </div>
                     <div className="cartImage px-2 ">
@@ -222,13 +256,13 @@ setCart(data);
                           <div className="">₹{x?.price}</div>
                           <div className="cartInc ">
                             <div className="text-center noneInitially">
-                              <span className={`decCart ${x?.quantity > 1 ? 'mb-1' : ''}`}  onClick={()=>{x?.quantity === 1?handleProductDelete(x?.id):priceIn("-",x?.id)}}>{x?.quantity === 1?<AiOutlineDelete className="mb-2" fontSize={17} />:"-"}</span>
+                              <span className={`decCart ${x?.qty > 1 ? 'mb-1' : ''}`}  onClick={()=>{x?.qty === 1?handleProductDelete(x?.id,x):priceIn("-",x?.id,x)}}>{x?.qty === 1?<AiOutlineDelete className="mb-2" fontSize={17} />:"-"}</span>
                             </div>
                             <div className="text-center numberCart noneInitially">
-                              <span>{x?.quantity}</span>
+                              <span>{x?.qty}</span>
                             </div>
                             <div className="text-center showAllDiv">
-                              <span className="incCart mb-1" onClick={()=>priceIn("+",x?.id)} >+</span>
+                              <span className="incCart mb-1" onClick={()=>priceIn("+",x?.id,x)} >+</span>
                             </div>
                           </div>
                         </div>

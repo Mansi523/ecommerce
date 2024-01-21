@@ -5,9 +5,11 @@ import Modal from "@mui/material/Modal";
 import { useContext} from "react";
 import { ProductContext } from "../../Context/MyContext";
 import { useNavigate } from "react-router-dom";
-export default function BasicModal({ open,user, setOpen, productDetails,handleClose,style,sizeUpdate,setSizeUpdate,handleUdpateCartSize}) {
-  
+import {collection,onSnapshot,addDoc,where,query,getDocs,doc, updateDoc } from "firebase/firestore";
+import { db } from "../../Firebase/Firebase";
+export default function BasicModal({ open, setOpen, productDetails,handleClose,style,sizeUpdate,setSizeUpdate,handleUdpateCartSize}) {
   const{size,setSize} = useContext(ProductContext);
+  const user = JSON.parse(window.localStorage.getItem("August"));
 
   const navigate = useNavigate();
 
@@ -15,11 +17,39 @@ export default function BasicModal({ open,user, setOpen, productDetails,handleCl
     setSize(s);
   }
 
-  const HandleModalBag =()=>{
+  const HandleModalBag =async()=>{
   if(size){
-    if(false){
+    if(user){
   //for login user
-    }else{
+  const citiesRef = collection(db, "carts");
+    
+  const q = query(citiesRef, where("id", "==", 
+  productDetails?.id));
+
+  const querySnapshot = await getDocs(q);
+const check = querySnapshot?.docChanges();
+if(check.length === 0){
+const docRef = await addDoc(collection(db, "carts"), {
+...productDetails,size,userId:user?.uid,
+qty: 1,status:true,
+});
+}
+else{
+console.log("already added");
+console.log(check[0]?.doc?.id,"check123");
+const cartid = check[0]?.doc?.id;
+const washingtonRef = doc(db, "carts", cartid);
+const total = Number(productDetails?.qty)+1;
+console.log("total",total);
+await updateDoc(washingtonRef, {
+qty:total,
+size,
+});
+}
+return navigate('/cart');
+   
+}
+    else{
       const cart = window.localStorage.getItem("goodies")?JSON.parse(window.localStorage.getItem("goodies")):[];
       const check = cart?.find((c,i)=>(
       c?.id === productDetails?.id
@@ -27,7 +57,7 @@ export default function BasicModal({ open,user, setOpen, productDetails,handleCl
       if(check){
         const cartUpdate = cart?.map((c,i)=>{
         if(c?.id === productDetails?.id){
-        return {...c,quantity:c?.quantity+1,size}
+        return {...c,qty:c?.qty+1,size}
         }else{
         return c;
         }
@@ -36,12 +66,13 @@ export default function BasicModal({ open,user, setOpen, productDetails,handleCl
   
       }
       else{
-          const notLoginUser = {...productDetails,quantity:1,size};
+          const notLoginUser = {...productDetails,qty:1,size,status:true};
       cart.push(notLoginUser);
       window.localStorage.setItem("goodies",JSON.stringify(cart));
       }
+      return navigate('/cart');
+    
     }
-    return navigate('/cart');
     
   }
   

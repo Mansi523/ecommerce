@@ -254,7 +254,8 @@ const handleSubmitSignup = async (e) => {
       );
         window.location.href = '/userprofile'
         console.log("Document written with ID: ", docRef.id);
-      } catch (e) {
+      } 
+      catch (e) {
         console.error("Error adding document: ",e);
         setLoader(false);
         toast.error('Something went wrong!',
@@ -270,9 +271,8 @@ const handleSubmitSignup = async (e) => {
 
       console.log(user);
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+
+      console.log(error);
     setLoader(false);
     toast.error('Something went wrong!',
     {
@@ -283,16 +283,10 @@ const handleSubmitSignup = async (e) => {
       },
     }
   );
+  window.location.href = '/authenticate';
+
     }
-    toast('Sign in Successfully!',
-    {
-      style: {
-        borderRadius: '10px',
-        background: '#333',
-        color: '#fff',
-      },
-    }
-  );
+
     setName("");
     setPassword("");
     setEmail("");

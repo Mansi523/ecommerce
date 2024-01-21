@@ -7,7 +7,7 @@ import Profile from "./Pages/UserProfile/Profile";
 import Admin from "./Pages/Admin/Admin";
 import Error from "./Pages/NotFound/Error";
 import ResetPassword from "./Components/Register/ResetPassword";
-import { useContext } from "react";
+import { useContext,useEffect} from "react";
 import { UserContext } from "./Context/MyContext";
 import UserProvider from "./Context/UserProvider";
 import toast, { Toaster } from "react-hot-toast";
@@ -21,6 +21,8 @@ import Bag from "./Pages/Bag/Bag";
 import Wishlist from "./Pages/Bag/Wishlist";
 import Checkout from "./Pages/Favourite/Checkout";
 import Loader from "./Components/Loader/Loader.jsx";
+import { db } from "./Firebase/Firebase.js";
+import {collection,addDoc} from "firebase/firestore";
 
 const UserPrivateRoute = ({children})=>{
  const {currentuser,loader} = useContext(UserContext);
@@ -52,6 +54,25 @@ const UserPrivateAuthenticate = ({children})=>{
 
 
 function App() {
+  const user = JSON.parse(window.localStorage.getItem("August"));
+
+  useEffect(()=>{
+    if(user){
+      const data = JSON.parse(window.localStorage.getItem("goodies"));
+      data?.forEach (async(c)=> {
+        const docRef = await addDoc(collection(db, "carts"), 
+      {
+        ...c,
+        userId:user?.uid,
+      }   
+        );
+        console.log("")
+      });
+      window.localStorage.removeItem("goodies");
+    }
+    },[])
+    
+
   return (
     <div className="App">
       <BrowserRouter>
