@@ -43,6 +43,8 @@ const Bag = () => {
   const [totalPrice,setTotalPrice] = useState(0);
   const [catId,setCatId] = useState("");
  const [cartUpdate,setCartUpdate] = useState(false);
+const [statusAll,setStatusAll] = useState(false);
+
   const handleUserCheck =()=>{
 
   }
@@ -81,7 +83,7 @@ const Bag = () => {
 
 useEffect(()=>{
 
-  const price = cart?.reduce((a,{price})=>a+Number(price),0);
+  const price = cart?.reduce((a,{price,status})=>status?a+Number(price):a,0);
 const id = cart[cart?.length-1]?.categoriesName?.id;
 setCatId(id);
 setTotalPrice(price);
@@ -173,6 +175,38 @@ const handleStatusUpdate =async(x)=>{
 setCartUpdate(!cartUpdate);
 }
 
+useEffect(()=>{
+  let checkStatus = true;
+for(let i=0;i<cart.length;i++){
+
+  if(cart[i].status !== true){
+     checkStatus = false;
+  }
+}
+console.log("checkstatusoffff",checkStatus);
+if(checkStatus){
+  setStatusAll(false);
+}else{
+  setStatusAll(true);
+}
+},[cart,cartUpdate])
+
+
+const handleAllStatus = async () => {
+  const promises = [];
+
+  for (let i = 0; i < cart.length; i++) {
+    const washingtonRef = doc(db, "carts", cart[i]?.cartid);
+    console.log("printsomething");
+    promises.push(updateDoc(washingtonRef, { status:statusAll?true:false}));
+  }
+
+  await Promise.all(promises);
+  console.log("Before setCartUpdate",promises);
+  setCartUpdate((prevCartUpdate) => !prevCartUpdate);
+  console.log("After setCartUpdate");
+};
+
   return (
     <>
       <div className="bag">
@@ -192,9 +226,13 @@ setCartUpdate(!cartUpdate);
                       className="col fontFamilyCart"
                       onClick={() => navigate("/cart")}
                     >
-                      <span>
-                      <TbSquareRoundedCheckFilled fontSize={23} />
-                      </span>
+                      {
+                        cart.length > 0 && <span onClick={()=>handleAllStatus()}>
+                        {statusAll?<TbSquareRounded  fontSize={23} />:<TbSquareRoundedCheckFilled fontSize={23} />}
+                          
+                        </span>
+                      }
+
                       <span className="mx-3">My Bag ({cart?.length ? cart?.length : 0})</span>
                     </div>
 

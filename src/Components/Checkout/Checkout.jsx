@@ -31,7 +31,14 @@ const Checkout = ({cart, totalPrice}) => {
             </div>
           </div>
           <div className="row m-auto py-4">
-            <button className="btn btn-dark" onClick={()=>navigate('/checkout')}>CHECKOUT({cart?.length? cart?.length :0})</button>
+          <button
+  className="btn btn-dark"
+  disabled={cart.length <= 0}
+  onClick={() => navigate('/checkout')}
+>
+  CHECKOUT ({cart?.length ? cart?.length : 0})
+</button>
+
             <p className="pt-3">
               Do you have a discount coupon? Add in the next step.
             </p>
