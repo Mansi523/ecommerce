@@ -9,6 +9,7 @@ import BestSelller from '../../Components/Home/BestSelller';
 import EveryMood from '../../Components/Home/EveryMood';
 import { useContext } from 'react';
 import { ProductContext } from '../../Context/MyContext';
+import FotterBanner from '../../Components/Fotter/FotterBanner';
 const Home = () => {
   const {video} = useContext(ProductContext);
   return (
@@ -27,6 +28,7 @@ const Home = () => {
      <HomeBanner/>
      <BestSelller/>
      <EveryMood/>
+     <FotterBanner/>
       </>
   )
 }
