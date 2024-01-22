@@ -1,61 +1,113 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { HiOutlineCreditCard } from "react-icons/hi2";
 import { PiKeyReturnBold } from "react-icons/pi";
+import { useContext } from "react";
+import { OrderContext, UserContext } from "../../Context/MyContext";
+import { HiOutlineChevronRight } from "react-icons/hi2";
 import { Radio } from "antd";
+import {useNavigate} from "react-router-dom";
+
 const Checkout = () => {
     const [value, setValue] = useState(1);
+    const [defaultAdress,setDefaultAddress] = useState({});
+    const {placeOrder,totalPayment,handleOrders} = useContext(OrderContext);
+    const {User,setheading} = useContext(UserContext);
+    const [paymentMethod,setPaymentMethod] = useState("cod");
+    const navigate = useNavigate();
+
+    console.log("useradress",User);
     const onChange = (e) => {
       console.log("radio checked", e.target.value);
       setValue(e.target.value);
     };
+
+   useEffect(()=>{
+    setDefaultAddress(User.defaultaddress);
+
+   },[User])
+
+   const handlePlaceOrder = async () => {
+    setheading("All");
+    await handleOrders(paymentMethod); // Assuming handleOrders is an asynchronous function
+    navigate('/userprofile');
+  };
+  
+
   return (
     <div className="paymentCheckout">
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-7">
-            <div className="row addressCheckoutTime"></div>
+            <div className="row addressCheckoutTime">
+<div className="d-flex justify-content-between align-items-center">
+  <div className="div">
+  <h6>
+                <span>{defaultAdress?.Address}, </span>
+                <span>{defaultAdress?.Locality} </span>
+                <span>{defaultAdress?.City} ,  </span>
+                <span>{defaultAdress?.State} , </span>
+                <span>{defaultAdress?.Pincode} </span>
+           
+              </h6>
+  </div>
+  <div className="div">
+   <span><HiOutlineChevronRight /></span>
+  </div>
+</div>
+            
+             <p>
+             <span>{defaultAdress?.Fullname} &nbsp;&nbsp;&nbsp;&nbsp;</span>  
+              <span>{defaultAdress?.MobileNo}</span>  
+              </p>            
+
+            </div>
             <div className="deliveryDate row">
               <p>Standard Delivery</p>
               <p>Delivery by Thu, 25 Jan - Mon, 29 Jan</p>
             </div>
+
             <div className="row mt-4">
-              {[1, 2, 3, 4].map((x, i) => (
-                <div className="cartShow " key={i}>
-                  <div className="cartImage px-2 checkoutImag">
-                    <img
-                      src="https://img101.urbanic.com/v1/goods-pic/314b993d3033447f9428dbca2cc94548UR_w1440_q90.webp"
-                      alt=""
-                      className="bg-dark"
-                    />
-                  </div>
-                  <div className="hearIcon"></div>
-                  <div className="CartSize">
-                    <div className="row ">
-                      <div className="cartPrice">
-                        <div className="cartProductName">
-                          <p>Ruffle Cocktail Dress</p>
-                          <p>
-                            <b>M</b>
-                          </p>
-                        </div>
-                        <div className="">₹3,690</div>
-                        <div className="cartInc ">
-                          <div className="text-center numberCart noneInitially">
-                            <span>6</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            {placeOrder?.map((x, i) => (
+  x?.status && 
+  <div className="cartShow " key={i}>
+    <div className="cartImage px-2 checkoutImag">
+      <img
+        src={x?.photo?.url}
+        alt={x?.name}
+        className="bg-dark"
+      />
+    </div>
+    <div className="hearIcon"></div>
+    <div className="CartSize">
+      <div className="row ">
+        <div className="cartPrice">
+          <div className="cartProductName">
+            <p>{x?.name}</p>
+            <p>
+              <b>{x?.size}</b>
+            </p>
+          </div>
+          <div className="">₹{x?.price}</div>
+          <div className="cartInc ">
+            <div className="text-center numberCart noneInitially">
+              <span>{x?.qty}</span>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+            
+            ))}
+            </div>
+
             <div className="row">
               <Radio.Group onChange={onChange} value={value}>
                 <Radio value={1}>cash on delivery</Radio>
                 <Radio value={2}>online</Radio>
               </Radio.Group>
+
             </div>
           </div>
           <div className="col-md-5 ">
@@ -68,7 +120,7 @@ const Checkout = () => {
                       <span>Total MRP</span>
                     </div>
                     <div>
-                      <span>₹36,900</span>
+                      <span>{totalPayment}</span>
                     </div>
                   </div>
                 </div>
@@ -78,7 +130,7 @@ const Checkout = () => {
                       <span>Discount on MRP:</span>
                     </div>
                     <div>
-                      <span>-₹36,90</span>
+                      <span>-₹50</span>
                     </div>
                   </div>
                 </div>
@@ -98,12 +150,12 @@ const Checkout = () => {
                       <span>Total Amount:</span>
                     </div>
                     <div>
-                      <span>₹75,276</span>
+                      <span>₹{totalPayment-50}</span>
                     </div>
                   </div>
                 </div>
                 <div className="row m-auto py-4">
-                  <button className="btn btn-dark">CHECKOUT(10)</button>
+                  <button className="btn btn-dark" onClick={handlePlaceOrder}>CHECKOUT({placeOrder.length})</button>
                 </div>
               </div>
             </div>

@@ -524,7 +524,7 @@ window.location.href = '/authenticate'
     ,Modal,setModal,Myprofile,setMyprofile,handleConfirm,
     Categories,setCategories,User,handleAddressDelete,
     handleAddressUpdate,IsUpdate,handleSaveUpdate,handleDefaultAddress
-    ,Reset,setReset,handleReset
+    ,Reset,setReset,handleReset,setheading
     }}>
       {children}
     </UserContext.Provider>

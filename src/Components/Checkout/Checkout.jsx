@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { HiOutlineCreditCard } from "react-icons/hi2";
 import { PiKeyReturnBold } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { OrderContext } from "../../Context/MyContext";
+
 const Checkout = ({cart, totalPrice}) => {
   const navigate = useNavigate();
+  const {handleCheckOut} = useContext(OrderContext);
+
+  const handleCheckIn = ()=>{
+    handleCheckOut();
+
+    return navigate('/checkout');
+  }
+
   return (
     <div className="container-fluid  ">
       <div className="row checkout p-4">
@@ -34,7 +45,7 @@ const Checkout = ({cart, totalPrice}) => {
           <button
   className="btn btn-dark"
   disabled={cart.length <= 0}
-  onClick={() => navigate('/checkout')}
+  onClick={() => handleCheckIn()}
 >
   CHECKOUT ({cart?.length ? cart?.length : 0})
 </button>
