@@ -10,7 +10,7 @@ import "../../Style/Cart.css";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useContext } from "react";
 import { IoBagOutline } from "react-icons/io5";
-import { UserContext,ProductContext } from "../../Context/MyContext";
+import { UserContext,ProductContext,OrderContext} from "../../Context/MyContext";
 import { db } from "../../Firebase/Firebase";
 import { addDoc,collection,onSnapshot,doc,updateDoc, query, where, getDocs ,deleteDoc } from "firebase/firestore";
 import { TbSquareRounded, TbSquareRoundedCheckFilled} from "react-icons/tb";
@@ -44,6 +44,8 @@ const Bag = () => {
   const [catId,setCatId] = useState("");
  const [cartUpdate,setCartUpdate] = useState(false);
 const [statusAll,setStatusAll] = useState(false);
+const {setOrderCartDel} = useContext(OrderContext);
+
 
   const handleUserCheck =()=>{
 
@@ -52,7 +54,6 @@ const [statusAll,setStatusAll] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         if (user) {
         console.log("user.uid",user.uid);
           const q = query(collection(db, 'carts'), where('userId', '==', user?.uid));
@@ -62,6 +63,7 @@ const [statusAll,setStatusAll] = useState(false);
             cartid: doc.id,
           }));
           console.log('<<<<<<<<<<<<<<<', data);
+          setOrderCartDel(data);
           setCart(data);
         }
       } catch (e) {

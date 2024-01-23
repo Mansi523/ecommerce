@@ -9,9 +9,9 @@ import { Radio } from "antd";
 import {useNavigate} from "react-router-dom";
 
 const Checkout = () => {
-    const [value, setValue] = useState(1);
     const [defaultAdress,setDefaultAddress] = useState({});
-    const {placeOrder,totalPayment,handleOrders} = useContext(OrderContext);
+    const {placeOrder,totalPayment,handleOrders,handleOrderOnline,handleDeleteCartShop
+    } = useContext(OrderContext);
     const {User,setheading} = useContext(UserContext);
     const [paymentMethod,setPaymentMethod] = useState("cod");
     const navigate = useNavigate();
@@ -19,9 +19,9 @@ const Checkout = () => {
     console.log("useradress",User);
     const onChange = (e) => {
       console.log("radio checked", e.target.value);
-      setValue(e.target.value);
+      setPaymentMethod(e.target.value);
     };
-
+   
    useEffect(()=>{
     setDefaultAddress(User.defaultaddress);
 
@@ -29,7 +29,13 @@ const Checkout = () => {
 
    const handlePlaceOrder = async () => {
     setheading("All");
-    await handleOrders(paymentMethod); // Assuming handleOrders is an asynchronous function
+    if(paymentMethod === "cod"){
+      await handleOrders(paymentMethod,defaultAdress); 
+    }
+   else{
+    await handleOrderOnline(paymentMethod,defaultAdress); 
+   }
+    handleDeleteCartShop()
     navigate('/userprofile');
   };
   
@@ -103,9 +109,9 @@ const Checkout = () => {
             </div>
 
             <div className="row">
-              <Radio.Group onChange={onChange} value={value}>
-                <Radio value={1}>cash on delivery</Radio>
-                <Radio value={2}>online</Radio>
+              <Radio.Group onChange={onChange} value={paymentMethod}>
+                <Radio value="cod">cash on delivery</Radio>
+                <Radio value="online">online</Radio>
               </Radio.Group>
 
             </div>
