@@ -112,7 +112,10 @@ const handleOrderOnline = (o,defaultAdress)=>{
             color: '#fff',
           },
         }
-      );
+        );
+       if(response){
+       window.location.href='userprofile';
+       }
       try{
         userOrder.paymentId=paymentId;
         const docRef = await addDoc(collection(db, "orders"),userOrder);

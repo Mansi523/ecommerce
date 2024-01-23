@@ -30,12 +30,12 @@ const Checkout = () => {
     setheading("All");
     if(paymentMethod === "cod"){
       await handleOrders(paymentMethod,defaultAdress); 
+      navigate('/userprofile');
     }
    else{
     await handleOrderOnline(paymentMethod,defaultAdress); 
    }
     handleDeleteCartShop()
-    navigate('/userprofile');
   };
   
 
