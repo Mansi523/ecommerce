@@ -10,12 +10,11 @@ import {useNavigate} from "react-router-dom";
 
 const Checkout = () => {
     const [defaultAdress,setDefaultAddress] = useState({});
-    const {placeOrder,totalPayment,handleOrders,handleOrderOnline,handleDeleteCartShop
-    } = useContext(OrderContext);
+    const {placeOrder,totalPayment,handleOrders,handleOrderOnline,handleDeleteCartShop} = useContext(OrderContext);
     const {User,setheading} = useContext(UserContext);
     const [paymentMethod,setPaymentMethod] = useState("cod");
     const navigate = useNavigate();
-
+    const datacheck = "";
     console.log("useradress",User);
     const onChange = (e) => {
       console.log("radio checked", e.target.value);
