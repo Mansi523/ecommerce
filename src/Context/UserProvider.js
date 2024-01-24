@@ -51,6 +51,7 @@ const UserProvider = ({ children }) => {
     City:"",
     State:"",
     });
+
  const [Myprofile,setMyprofile] = useState({
     Name:"",
     birthday:"",
@@ -197,11 +198,10 @@ toast('Loged in Successfully!',
        
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // console.log(errorCode, errorMessage);
+
+        console.log(error);
 setLoader(false);
-toast.error('Something went wrong!',
+toast.error('Invaild Email and Password!',
 {
   style: {
     borderRadius: '10px',
@@ -257,7 +257,7 @@ const handleSubmitSignup = async (e) => {
       } 
       catch (e) {
         console.error("Error adding document: ",e);
-        setLoader(false);
+
         toast.error('Something went wrong!',
         {
           style: {
@@ -267,13 +267,13 @@ const handleSubmitSignup = async (e) => {
           },
         }
       );
+      setLoader(false);
       }
 
       console.log(user);
-    } catch (error) {
-
+    }
+     catch (error) {
       console.log(error);
-    setLoader(false);
     toast.error('Something went wrong!',
     {
       style: {
@@ -283,10 +283,9 @@ const handleSubmitSignup = async (e) => {
       },
     }
   );
+  setLoader(false);
   window.location.href = '/authenticate';
-
     }
-
     setName("");
     setPassword("");
     setEmail("");

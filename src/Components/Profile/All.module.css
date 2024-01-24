@@ -1,5 +1,5 @@
 .container{
-    height:300px;
+    height:auto;
     width:96%;
     border:1px solid #D4D4D4;
     box-sizing: border-box;
@@ -79,4 +79,13 @@
   outline:none;
   cursor:pointer;
   width:180px;
+}
+.pagination{
+    margin-top:20px;
+    margin-left:900px;
+    font-size:0.9rem;
+    font-weight:600;
+}
+.pagination span{
+    cursor:pointer;
 }

@@ -1,7 +1,9 @@
 import React from "react";
 import style from "../Profile/NoOrder.module.css";
 import { VscInbox } from "react-icons/vsc";
+import { useNavigate } from "react-router-dom";
 const NoOrder = () => {
+  const navigate = useNavigate();
   return (
     <>
      <section className={style.Container}>
@@ -13,7 +15,7 @@ const NoOrder = () => {
           <div className={style.emptyText}>
            <span>No related orders</span>
           </div>
-          <button className={style.btn}>Go Shopping</button>
+          <button className={style.btn} onClick={()=>navigate('/product')}>Go Shopping</button>
         </div>
      </section>
     </>

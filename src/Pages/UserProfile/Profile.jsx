@@ -10,10 +10,12 @@ import Error from '../NotFound/Error';
 import style from '../UserProfile/Profile.module.css';
 import { useContext } from 'react';
 import { UserContext } from '../../Context/MyContext';
+import { OrderContext } from '../../Context/MyContext';
 import FinalAddress from '../../Components/Profile/FinalAddress';
 import All from '../../Components/Profile/All';
 const Profile = () => {
   const {heading} = useContext(UserContext);
+  const {orderPurchaseCart} = useContext(OrderContext);
   return (
    
     <>
@@ -36,7 +38,7 @@ const Profile = () => {
         <div className={style.Down}>
           <div className={style.divinside}>
             {
-            heading === "All" ? <All/>  : null
+            heading === "All" ? orderPurchaseCart.length>0?<All/>:<NoOrder/>: null
             }
               {
            
@@ -57,7 +59,7 @@ const Profile = () => {
     {/* <NoOrder/> */}
     {/* <Empty/> */}
     {/* <Loader/> */}
-    {/* <NoOrder/> */}
+  
     </>
   )
 }

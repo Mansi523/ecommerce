@@ -10,6 +10,45 @@ const OrderProvider = ({children}) => {
   const [checkOut,setCheckOut]  =useState(false);
   const [totalPayment,setTotalPayment] = useState(0);
   const [orderCartDel,setOrderCartDel] = useState([]);
+  const [orderPurchaseCart,setOrderPurchaseCart] = useState([]);
+  const [orderUpdate,setOderUpdate] = useState(false);
+  const [currentPage,setCurrentPage] = useState(1);
+  const [totalPage,setTotalPage] = useState(1);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (user) {
+        console.log("user.uid",user.uid);
+          const q = query(collection(db, 'orders'), where('userId', '==', user?.uid));
+          const querySnapshot = await getDocs(q);
+          const data = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            orderid: doc.id,
+          }));
+          const orderPerPage = 2;
+          const startIndex = (currentPage-1)*orderPerPage;
+          const lastIndex = startIndex + orderPerPage;
+          setOrderPurchaseCart(data.slice(startIndex,lastIndex));
+          setTotalPage(Math.ceil(data.length/orderPerPage));
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchData();
+
+  }, [orderUpdate]); 
+
+const handlePageChange =(page)=>{
+  if(page < 1 || page > totalPage){
+    return;
+  }
+setCurrentPage(page);
+setOderUpdate(!orderUpdate);
+}
+
   const handleCheckOut =()=>{
     setCheckOut(!checkOut);
 
@@ -62,6 +101,7 @@ const OrderProvider = ({children}) => {
         totalPayment,
         orderqty:order.length,
         defaultAdress,
+        userId:user?.uid,
     }
 
     try{
@@ -69,7 +109,7 @@ const OrderProvider = ({children}) => {
     }catch(e){
         console.log(e);
     }
-
+setOderUpdate(!orderUpdate);
   }
 
 const handleOrderOnline = (o,defaultAdress)=>{
@@ -91,6 +131,7 @@ const handleOrderOnline = (o,defaultAdress)=>{
     totalPayment,
     orderqty:order.length,
     defaultAdress,
+    userId:user.uid,
 }
 
   var options = {
@@ -114,6 +155,7 @@ const handleOrderOnline = (o,defaultAdress)=>{
         }
         );
        if(response){
+        setOderUpdate(!orderUpdate);
        window.location.href='userprofile';
        }
       try{
@@ -151,7 +193,7 @@ for(let i=0;i<result.length;i++){
 }
 }
   return (
-   <OrderContext.Provider value={{placeOrder,setOrderCartDel,handleDeleteCartShop,handleCheckOut,totalPayment,handleOrders,handleOrderOnline}}>
+   <OrderContext.Provider value={{totalPage,currentPage,handlePageChange,placeOrder,orderPurchaseCart,setOrderCartDel,handleDeleteCartShop,handleCheckOut,totalPayment,handleOrders,handleOrderOnline}}>
     {children}
    </OrderContext.Provider>
   )

@@ -28,12 +28,13 @@ const UserPrivateRoute = ({children})=>{
  const {currentuser,loader} = useContext(UserContext);
 
 const token = window.localStorage.getItem("August");
- if(loader){
-  return <Loader
-  path="/authenticate"
-  />
+ if(currentuser){
+  return children;
    }else{
-    return children;
+
+    return <Loader
+    path="/authenticate"
+    />
    }
 
 }
@@ -43,12 +44,12 @@ const UserPrivateAuthenticate = ({children})=>{
  
  const token = window.localStorage.getItem("August");
 
-    if(loader){
-      return children;
-     }else{
+    if(currentuser){
       return <Loader
       path="/userprofile"
       />
+     }else{
+      return children;
      }
  }
 
