@@ -336,10 +336,18 @@ signOut(auth).then(() => {
   }
 
 const handleSaveAddress =async()=>{
-  const id = window.localStorage.getItem("UserId");
+  const user = JSON.parse(window.localStorage.getItem("August"));
+  const citiesRef = collection(db, "users");
   
-  const washingtonRef = doc(db,"users",JSON.parse(id));
+  const q = query(citiesRef, where("userId", "==", 
+  user.uid));
 
+  const querySnapshot = await getDocs(q);
+const check = querySnapshot?.docChanges();
+console.log("save address ",check[0].doc.id);
+const id =  check[0].doc.id;
+const washingtonRef = doc(db,"users",id);
+ 
   // Atomically add a new region to the "regions" array field.
   const DATA = {...Address,id:Date.now()}
   await updateDoc(washingtonRef, {
@@ -363,10 +371,18 @@ const handleSaveAddress =async()=>{
 }
 
 const handleConfirm = async()=>{
-  const id = window.localStorage.getItem("UserId");
+  const user = JSON.parse(window.localStorage.getItem("August"));
+  const citiesRef = collection(db, "users");
+  
+  const q = query(citiesRef, where("userId", "==", 
+  user.uid));
 
+  const querySnapshot = await getDocs(q);
+const check = querySnapshot?.docChanges();
+console.log("save address ",check[0].doc.id);
+const id =  check[0].doc.id;
   const data = Categories.filter((item)=>item.show === true);
-  const washingtonRef = doc(db, "users",JSON.parse(id));
+  const washingtonRef = doc(db, "users",id);
 
 // Set the "capital" field of the city 'DC'
 await updateDoc(washingtonRef,{
@@ -391,29 +407,50 @@ setIsProfile(!IsProfile);
 // get current user
 useEffect(()=>{
 const getCurrentUser =async()=>{
-const id = window.localStorage.getItem("UserId");
-if(id){
-  const docRef = doc(db, "users",JSON.parse(id));
-  const docSnap = await getDoc(docRef);
+  const user = JSON.parse(window.localStorage.getItem("August"));
+  if(user){
+    const citiesRef = collection(db, "users");
   
-  if (docSnap.exists()) {
-    setUser(docSnap.data());
-    setMyprofile({...Myprofile,Name:docSnap.data().name})
-    console.log("Document data:", docSnap.data());
-  } else {
-    // docSnap.data() will be undefined in this case
-    console.log("No such document!");
+    const q = query(citiesRef, where("userId", "==", 
+    user.uid));
+  
+    const querySnapshot = await getDocs(q);
+  const check = querySnapshot?.docChanges();
+  console.log("save address ",check[0].doc.id);
+  const id =  check[0].doc.id;
+  if(id){
+    const docRef = doc(db, "users",id);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      setUser(docSnap.data());
+      setMyprofile({...Myprofile,Name:docSnap.data().name})
+      console.log("Document data:", docSnap.data());
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
   }
-}
+  }
+ 
 
 }
 getCurrentUser();
 },[currentuser,IsProfile])
 
 const handleAddressDelete = async(address)=>{
-  const id = window.localStorage.getItem("UserId");
+  const user = JSON.parse(window.localStorage.getItem("August"));
+  const citiesRef = collection(db, "users");
   
-  const washingtonRef = doc(db,"users",JSON.parse(id));
+  const q = query(citiesRef, where("userId", "==", 
+  user.uid));
+
+  const querySnapshot = await getDocs(q);
+const check = querySnapshot?.docChanges();
+console.log("save address ",check[0].doc.id);
+const id =  check[0].doc.id;
+  
+  const washingtonRef = doc(db,"users",id);
 
   // Atomically add a new region to the "regions" array field.
   await updateDoc(washingtonRef, {
@@ -439,9 +476,18 @@ const handleAddressUpdate =(address)=>{
 
 const handleSaveUpdate =async()=>{
   console.log(Address);
-  const id = window.localStorage.getItem("UserId");
+  const user = JSON.parse(window.localStorage.getItem("August"));
+  const citiesRef = collection(db, "users");
   
-  const washingtonRef = doc(db,"users",JSON.parse(id));
+  const q = query(citiesRef, where("userId", "==", 
+  user.uid));
+
+  const querySnapshot = await getDocs(q);
+const check = querySnapshot?.docChanges();
+console.log("save address ",check[0].doc.id);
+const id =  check[0].doc.id;
+  
+  const washingtonRef = doc(db,"users",id);
 
   // Atomically add a new region to the "regions" array field.
   await updateDoc(washingtonRef, {
@@ -456,9 +502,18 @@ const handleSaveUpdate =async()=>{
 }
 
 const handleDefaultAddress =async(address)=>{
-  const id = window.localStorage.getItem("UserId");
+  const user = JSON.parse(window.localStorage.getItem("August"));
+  const citiesRef = collection(db, "users");
+  
+  const q = query(citiesRef, where("userId", "==", 
+  user.uid));
 
-  const washingtonRef = doc(db, "users",JSON.parse(id));
+  const querySnapshot = await getDocs(q);
+const check = querySnapshot?.docChanges();
+console.log("save address ",check[0].doc.id);
+const id =  check[0].doc.id;
+
+  const washingtonRef = doc(db, "users",id);
 
 // Set the "capital" field of the city 'DC'
 await updateDoc(washingtonRef,{

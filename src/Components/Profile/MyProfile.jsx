@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../../Context/MyContext";
 const MyProfile = () => {
   const {Myprofile,setMyprofile,handleConfirm,Categories,setCategories,User} = useContext(UserContext);
-
+  const user = JSON.parse(window.localStorage.getItem("August"));
   const handleSelect = (index) => {
     const datacategory = Categories.map((item, i) => {
       if (i == index) {
@@ -115,7 +115,7 @@ const MyProfile = () => {
             </span>
           </div>
           <div className={style.emailright}>
-            <a href="#">Verify</a>
+            <a href="#" >{user.emailVerified?"Verified":"Verify"}</a>
             <a href="#">Change</a>
           </div>
         </div>
