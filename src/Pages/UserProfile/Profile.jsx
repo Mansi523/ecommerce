@@ -72,7 +72,10 @@ const Profile = () => {
             currentPage={currentDeliveredPage}
             status={deliverd}/>:<NoOrder/>: null
             }
-
+              {
+           
+           heading === "Returns" ? <Empty/> : null
+           }
 
 
               {
@@ -88,13 +91,6 @@ const Profile = () => {
       </div>
      </div>
 
-    {/* <MyProfile/> */}
-    
-    
-    {/* <NoOrder/> */}
-    {/* <Empty/> */}
-    {/* <Loader/> */}
-  
     </>
   )
 }
