@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useState,useContext,useEffect} from 'react'
 import style from "../Profile/All.module.css";
-import { useContext } from 'react';
 import { OrderContext } from '../../Context/MyContext';
 import { HiOutlineChevronLeft } from "react-icons/hi2";
 import { HiOutlineChevronRight } from "react-icons/hi2";
-const All = () => {
+const All = ({status,type,totalPage,currentPage,handlePageChange}) => {
+const [data,setData] = useState([]);
+const {orderPurchaseCart} = useContext(OrderContext);
+useEffect(()=>{
+if(type === 'All'){
+setData(orderPurchaseCart);
+}else{
+  setData(status);
+}
 
-const {orderPurchaseCart,totalPage,currentPage,handlePageChange} = useContext(OrderContext);
+},[type,status,orderPurchaseCart]);
 
 const handlePageClick = (i)=>{
   if(currentPage === i+1){
@@ -17,7 +24,7 @@ const handlePageClick = (i)=>{
 
   return (
   <>
-   { orderPurchaseCart.map((o,i)=>(
+   {data.map((o,i)=>(
     <div className={style.container} key={o.orderid}>
     <div className={style.allheading}>
    <span className={style.ordersts}>Order Status : </span><span className={style.dispatchsts}>{o.orderStatus}</span>

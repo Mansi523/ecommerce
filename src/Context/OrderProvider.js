@@ -14,6 +14,15 @@ const OrderProvider = ({children}) => {
   const [orderUpdate,setOderUpdate] = useState(false);
   const [currentPage,setCurrentPage] = useState(1);
   const [totalPage,setTotalPage] = useState(1);
+  const[processing,setProcessing] = useState([]);
+  const [shipped,setShipped] = useState([]);
+  const [deliverd,setDelivered] = useState([]);
+  const [currentShippedPage,setCurrentShippedPage] = useState(1);
+  const [currentProcessingPage,setCurrentProcessingPage] = useState(1);
+  const [currentDeliveredPage,setCurrentDeliveredPage] = useState(1);
+  const [totalPageShipped,setTotalPageShipped] = useState(1);
+  const [totalPageDelivered,setTotalPageDelivered] = useState(1);
+  const [totalPageProcessing,setTotalPageProcessing] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,11 +35,27 @@ const OrderProvider = ({children}) => {
             ...doc.data(),
             orderid: doc.id,
           }));
+
+        const processingStatus = data.filter((p)=>p.orderStatus === "Processing");
+        const shippedStatus = data.filter((p)=>p.orderStatus === "Shipped");
+        const deliveredStatus = data.filter((p)=>p.orderStatus === "deliverd");
           const orderPerPage = 2;
           const startIndex = (currentPage-1)*orderPerPage;
           const lastIndex = startIndex + orderPerPage;
+          const startIndexP = (currentProcessingPage-1)*orderPerPage;
+          const lastIndexP = startIndexP + orderPerPage;
+          const startIndexS = (currentShippedPage-1)*orderPerPage;
+          const lastIndexS = startIndexS + orderPerPage;
+          const startIndexD = (currentDeliveredPage-1)*orderPerPage;
+          const lastIndexD = startIndexD + orderPerPage;
           setOrderPurchaseCart(data.slice(startIndex,lastIndex));
+          setProcessing(processingStatus.slice(startIndexP,lastIndexP));
+          setDelivered(deliveredStatus.slice(startIndexD,lastIndexD));
+          setShipped(shippedStatus.slice(startIndexS,lastIndexS));
           setTotalPage(Math.ceil(data.length/orderPerPage));
+          setTotalPageProcessing(Math.ceil(processingStatus.length/orderPerPage));
+          setTotalPageDelivered(Math.ceil(deliveredStatus.length/orderPerPage));
+          setTotalPageShipped(Math.ceil(shippedStatus.length/orderPerPage));
         }
       } catch (e) {
         console.log(e);
@@ -46,6 +71,30 @@ const handlePageChange =(page)=>{
     return;
   }
 setCurrentPage(page);
+setOderUpdate(!orderUpdate);
+}
+
+const handlePageChangeS =(page)=>{
+  if(page < 1 || page > totalPage){
+    return;
+  }
+setCurrentShippedPage(page);
+setOderUpdate(!orderUpdate);
+}
+
+const handlePageChangeD =(page)=>{
+  if(page < 1 || page > totalPage){
+    return;
+  }
+setCurrentDeliveredPage(page);
+setOderUpdate(!orderUpdate);
+}
+
+const handlePageChangeP =(page)=>{
+  if(page < 1 || page > totalPage){
+    return;
+  }
+setCurrentProcessingPage(page);
 setOderUpdate(!orderUpdate);
 }
 
@@ -97,7 +146,7 @@ setOderUpdate(!orderUpdate);
           year: "numeric",
         }
         ),
-        orderStatus:"pending",
+        orderStatus:"Processing",
         totalPayment,
         orderqty:order.length,
         defaultAdress,
@@ -127,7 +176,7 @@ const handleOrderOnline = (o,defaultAdress)=>{
       year: "numeric",
     }
     ),
-    orderStatus:"pending",
+    orderStatus:"Processing",
     totalPayment,
     orderqty:order.length,
     defaultAdress,
@@ -193,7 +242,14 @@ for(let i=0;i<result.length;i++){
 }
 }
   return (
-   <OrderContext.Provider value={{totalPage,currentPage,handlePageChange,placeOrder,orderPurchaseCart,setOrderCartDel,handleDeleteCartShop,handleCheckOut,totalPayment,handleOrders,handleOrderOnline}}>
+
+   <OrderContext.Provider value={{handlePageChangeS,handlePageChangeP,handlePageChangeD,
+    currentProcessingPage,currentDeliveredPage,currentShippedPage,totalPageDelivered,
+    totalPageProcessing,totalPageShipped,
+    shipped,deliverd,totalPage,processing,
+    currentPage,handlePageChange,
+   placeOrder,orderPurchaseCart,setOrderCartDel,handleDeleteCartShop,
+   handleCheckOut,totalPayment,handleOrders,handleOrderOnline}}>
     {children}
    </OrderContext.Provider>
   )

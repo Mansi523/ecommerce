@@ -15,7 +15,10 @@ import FinalAddress from '../../Components/Profile/FinalAddress';
 import All from '../../Components/Profile/All';
 const Profile = () => {
   const {heading} = useContext(UserContext);
-  const {orderPurchaseCart} = useContext(OrderContext);
+  const {orderPurchaseCart,processing,deliverd,shipped,handlePageChangeS,handlePageChangeP,handlePageChangeD,
+    currentProcessingPage,currentDeliveredPage,currentShippedPage,totalPageDelivered,
+    totalPageProcessing,totalPageShipped,totalPage,currentPage,handlePageChange}= useContext(OrderContext);
+
   return (
    
     <>
@@ -38,8 +41,40 @@ const Profile = () => {
         <div className={style.Down}>
           <div className={style.divinside}>
             {
-            heading === "All" ? orderPurchaseCart.length>0?<All/>:<NoOrder/>: null
+            heading === "All" ? orderPurchaseCart?.length>0?<All type="All" 
+            totalPage={totalPage}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+            />:<NoOrder/>: null
             }
+            {
+            heading === "Unpaid" ? <NoOrder/>: null
+            }
+            {
+            heading === "Processing" ? processing?.length>0?<All type="Processing"
+            totalPage={totalPageProcessing}
+            handlePageChange={handlePageChangeP}
+            currentPage={currentProcessingPage}
+            status={processing}/>:<NoOrder/>: null
+            }
+
+           {
+            heading === "Shipped" ? shipped?.length>0?<All type="Shipped"
+            totalPage={totalPageShipped}
+            handlePageChange={handlePageChangeS}
+            currentPage={currentShippedPage}
+            status={shipped}/>:<NoOrder/>: null
+            }
+            {
+            heading === "Delivered" ? deliverd?.length>0?<All type="Delivered"
+            totalPage={totalPageDelivered}
+            handlePageChange={handlePageChangeD}
+            currentPage={currentDeliveredPage}
+            status={deliverd}/>:<NoOrder/>: null
+            }
+
+
+
               {
            
            heading === "My Profile" ? <MyProfile/> : null
