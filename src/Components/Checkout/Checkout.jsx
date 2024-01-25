@@ -44,10 +44,10 @@ const Checkout = ({cart, totalPrice}) => {
           <div className="row m-auto py-4">
           <button
   className="btn btn-dark"
-  disabled={cart.length <= 0}
+  disabled={cart.length <= 0 || cart?.filter((p)=>(p.status === true)).length <=0}
   onClick={() => handleCheckIn()}
 >
-  CHECKOUT ({cart?.length ? cart?.length : 0})
+  CHECKOUT ({cart?.length ? cart?.filter((p)=>(p.status === true)).length : 0})
 </button>
 
             <p className="pt-3">

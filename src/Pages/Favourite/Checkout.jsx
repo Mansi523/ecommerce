@@ -9,7 +9,7 @@ import { Radio } from "antd";
 import {useNavigate} from "react-router-dom";
 
 const Checkout = () => {
-    const [defaultAdress,setDefaultAddress] = useState({});
+    const [defaultAdress,setDefaultAddress] = useState(null);
     const {placeOrder,totalPayment,handleOrders,handleOrderOnline,handleDeleteCartShop} = useContext(OrderContext);
     const {User,setheading} = useContext(UserContext);
     const [paymentMethod,setPaymentMethod] = useState("cod");
@@ -160,7 +160,7 @@ const Checkout = () => {
                   </div>
                 </div>
                 <div className="row m-auto py-4">
-                  <button className="btn btn-dark" onClick={handlePlaceOrder}>CHECKOUT({placeOrder.length})</button>
+                  <button className="btn btn-dark" disabled={!defaultAdress} onClick={handlePlaceOrder}>PLACE ORDER({placeOrder.filter((p)=>(p.status=== true)).length})</button>
                 </div>
               </div>
             </div>

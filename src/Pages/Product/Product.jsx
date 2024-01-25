@@ -16,6 +16,7 @@ const Product = () => {
    const [rightFilterOpen, setRightFilterOpen] = useState(false);
   const [leftFilterOpen, setLeftFilterOpen] = useState(false);
   const [categoriesName, setCategoriesName] = useState(null);
+  console.log("product test",product);
   const { id } = useParams();
   console.log(id);
   const rightFilterRef = useRef(null);
@@ -25,8 +26,6 @@ const Product = () => {
    useEffect(()=>{
     setFProduct(product);
    },[product])
-
-
 
   const handlePriceChange = (event) => {
     const newPrice = Number(event.target.value);
@@ -44,9 +43,25 @@ const Product = () => {
     );
     setFProduct(filteredData);
   };
-
-  const minPrice = 0;
-  const maxPrice = 30000;
+  let minPrice = 0;
+  let maxPrice = 0;
+  const handlePricemax=()=>{
+   let max=0;
+  let min=Math.min();
+   for(let i=0;i<product.length;i++){
+    if(Number(product[i]?.price)>max){
+      max=product[i]?.price;
+    }
+      if(Number(product[i]?.price)<min){
+        min=product[i]?.price;
+        
+      }
+    
+   }
+   minPrice = min;
+   maxPrice = max;
+  }
+  handlePricemax();
 
   useEffect(() => {
     const handleClickOutside = (event) => {

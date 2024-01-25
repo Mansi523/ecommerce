@@ -8,6 +8,7 @@ import { ProductContext } from "../../Context/MyContext";
 const Category = () => {
   const navigate = useNavigate();
   const [category,setCategory] = useState([]);
+  const [filterCategory,setFilterCategory] = useState([]);
   const {product} = useContext(ProductContext);
   const { id } = useParams();
   console.log("id for category",id);
@@ -30,12 +31,32 @@ const Category = () => {
     const newPrice = Number(event.target.value);
     setPrice(newPrice);
   
-    const filteredData = product.filter((p) => p.price <= newPrice);
-    setCategory(filteredData);
+    const filteredData = category?.filter((p) => Number(p?.price) <= newPrice);
+    console.log(filteredData);
+    // setCategory(filteredData);
+    setFilterCategory(filteredData);
   };
   
-   const minPrice = 0;
-   const maxPrice = 30000;
+  let minPrice = 0;
+  let maxPrice = 40000;
+  const handlePricemax=()=>{
+   let max=0;
+  let min=Math.min();
+   for(let i=0;i<category.length;i++){
+    if(Number(category[i]?.price)>max){
+      max=category[i]?.price;
+    }
+      if(Number(category[i]?.price)<min){
+        min=category[i]?.price;
+        
+      }
+    
+   }
+   console.log("min/max",max,min);
+   minPrice = min;
+   maxPrice = max;
+  }
+  handlePricemax();
  
    useEffect(() => {
      const handleClickOutside = (event) => {
@@ -149,27 +170,26 @@ const Category = () => {
               </div>
             </div>
             <div className="row Product mt-4">
-              <div className="row">
-                {category.map((d, i) => (
-                  <div
-                    className="col-sm-3 my-2"
-                    key={d.id}
-                    onClick={() => navigate(`/details/${d.id}`)}
-                  >
-                    <div className="similarImg">
-                      <img
-                        src={d.photo.url}
-                        alt={d.name}
-                      />
-                    </div>
-                    <div className="productNameOfDetails my-2">
-                      <p>{d.name}</p>
-                      <p>₹{d.price}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+  <div className="row">
+    {(filterCategory.length > 0 ? filterCategory : category).map((d, i) => (
+      <div
+        className="col-sm-3 my-2"
+        key={d.id}
+        onClick={() => navigate(`/details/${d.id}`)}
+      >
+        <div className="similarImg">
+          <img src={d.photo.url} alt={d.name} />
+        </div>
+        <div className="productNameOfDetails my-2">
+          <p>{d.name}</p>
+          <p>₹{d.price}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+
           </div>
         </div>
       </div>
