@@ -7,14 +7,8 @@ import {IoIosRadioButtonOff,IoCheckmarkCircle} from "react-icons/io";
 import {MdCheckCircle} from "react-icons/md";
 const FinalAddress = () => {
   const {User,handleAddressDelete,handleAddressUpdate,handleDefaultAddress} = useContext(UserContext);
-  // Fullname:"",
-  // MobileNo:"",
-  // Email:"",
-  // Address:"",
-  // Locality:"",
-  // Pincode:"",
-  // City:"",
-  // State:"",
+
+  console.log("some data needed to be added");
   return (
     <>
     {User.address.map((address,i)=>(
