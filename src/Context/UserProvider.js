@@ -306,6 +306,7 @@ signOut(auth).then(() => {
   setLoader(false);
   // window.localStorage.removeItem("UserId");
   window.localStorage.removeItem("August");
+  window.localStorage.removeItem("Ad");
   toast('Log Out Successfully!',
   {
     style: {
@@ -416,7 +417,7 @@ const getCurrentUser =async()=>{
   
     const querySnapshot = await getDocs(q);
   const check = querySnapshot?.docChanges();
-  console.log("save address ",check[0].doc.id);
+  console.log("save address ",check[0]?.doc?.id);
   const id =  check[0]?.doc?.id;
   if(id){
     const docRef = doc(db, "users",id);
@@ -503,6 +504,7 @@ const id =  check[0].doc.id;
 
 const handleDefaultAddress =async(address)=>{
   const user = JSON.parse(window.localStorage.getItem("August"));
+  window.localStorage.setItem("Ad",true);
   const citiesRef = collection(db, "users");
   
   const q = query(citiesRef, where("userId", "==", 

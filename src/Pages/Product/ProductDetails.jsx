@@ -74,10 +74,15 @@ const handleCart = async()=>{
         const querySnapshot = await getDocs(q);
       const check = querySnapshot?.docChanges();
   if(check.length === 0){
-    const docRef = await addDoc(collection(db, "carts"), {
-      ...productDetails,size,userId:user?.uid,status:true,
-      qty: 1, 
-    });
+    try{
+      const docRef = await addDoc(collection(db, "carts"), {
+        ...productDetails,size,userId:user?.uid,status:true,
+        qty: 1, 
+      });
+    }catch(e){
+      console.log("carterror",e);
+    }
+
   }
   else{
 console.log("already added");
@@ -117,7 +122,7 @@ await updateDoc(washingtonRef, {
 
     }
 
-   return navigate('/cart');
+  //  return navigate('/cart');
   }else{
 
     handleOpen();

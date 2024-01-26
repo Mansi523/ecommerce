@@ -13,17 +13,21 @@ const Checkout = () => {
     const {placeOrder,totalPayment,handleOrders,handleOrderOnline,handleDeleteCartShop} = useContext(OrderContext);
     const {User,setheading} = useContext(UserContext);
     const [paymentMethod,setPaymentMethod] = useState("cod");
+     
     const navigate = useNavigate();
     const datacheck = "";
-    console.log("useradress",User);
+    console.log("useradress",User.defaultAdress);
+     
     const onChange = (e) => {
       console.log("radio checked", e.target.value);
       setPaymentMethod(e.target.value);
     };
    
    useEffect(()=>{
-    setDefaultAddress(User.defaultaddress);
-
+    // if(User.defaultAdress){
+    // }
+    setDefaultAddress(User?.defaultaddress);
+    // console.log("userdefaultadress",User.defaultaddress);
    },[User])
 
    const handlePlaceOrder = async () => {
@@ -160,7 +164,10 @@ const Checkout = () => {
                   </div>
                 </div>
                 <div className="row m-auto py-4">
-                  <button className="btn btn-dark" disabled={!defaultAdress} onClick={handlePlaceOrder}>PLACE ORDER({placeOrder.filter((p)=>(p.status=== true)).length})</button>
+                <button className="btn btn-dark"   onClick={handlePlaceOrder}>
+  PLACE ORDER({placeOrder.filter((p) => p.status === true).length})
+</button>
+
                 </div>
               </div>
             </div>
