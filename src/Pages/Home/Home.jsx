@@ -28,7 +28,7 @@ const Home = () => {
      <HomeBanner/>
      <BestSelller/>
      <EveryMood/>
-     {/* <FotterBanner/> */}
+     <FotterBanner/>
       </>
   )
 }

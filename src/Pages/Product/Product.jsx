@@ -5,6 +5,7 @@ import { useNavigate,useParams} from "react-router-dom";
 import HomeBanner from "../../Components/Home/HomeBanner.jsx";
 import { ProductContext } from "../../Context/MyContext.js";
 import { Select } from "antd";
+import { SlHeart } from "react-icons/sl";
 const { Option } = Select;
 
 const Product = () => {
@@ -236,7 +237,7 @@ const Product = () => {
                                   <div className="row m-auto">
                       {fProduct.map((d, i) => (
                         <div
-                          className="col-sm-3 my-2"
+                          className="col-sm-3 my-2 productoutcls"
                           key={d.id}
                           onClick={() => navigate(`/details/${d.id}`)}
                         >
@@ -249,6 +250,9 @@ const Product = () => {
                           <div className="productNameOfDetails my-2">
                             <p>{d.name}</p>
                             <p>{d.price}</p>
+                          </div>
+                          <div className="fav-icon">
+                            <SlHeart fontSize={20} />
                           </div>
                         </div>
                       ))}
