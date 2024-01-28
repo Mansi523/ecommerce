@@ -1,5 +1,5 @@
 import React from 'react'
-import videoBg from '../../Assets/video.mp4';
+// import videoBg from '../../Assets/video.mp4';
 import style from '../Home/Home.module.css';
 import TopProduct from '../../Components/Home/TopProduct';
 import HomeCategory from '../../Components/Home/HomeCategory';
@@ -10,6 +10,7 @@ import EveryMood from '../../Components/Home/EveryMood';
 import { useContext } from 'react';
 import { ProductContext } from '../../Context/MyContext';
 import FotterBanner from '../../Components/Fotter/FotterBanner';
+import Fotter from '../../Components/Fotter/Fotter';
 const Home = () => {
   const {video} = useContext(ProductContext);
   return (
@@ -29,6 +30,7 @@ const Home = () => {
      <BestSelller/>
      <EveryMood/>
      <FotterBanner/>
+     <Fotter/>
       </>
   )
 }
