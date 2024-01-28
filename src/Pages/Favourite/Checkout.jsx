@@ -164,7 +164,7 @@ const Checkout = () => {
                   </div>
                 </div>
                 <div className="row m-auto py-4">
-                <button className="btn btn-dark"   onClick={handlePlaceOrder}>
+                <button className="btn btn-dark" disabled = {!window.localStorage.getItem("Ad")}   onClick={handlePlaceOrder}>
   PLACE ORDER({placeOrder.filter((p) => p.status === true).length})
 </button>
 

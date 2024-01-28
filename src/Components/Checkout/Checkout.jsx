@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { OrderContext } from "../../Context/MyContext";
 
-const Checkout = ({cart, totalPrice}) => {
+const Checkout = ({cart=[], totalPrice=0}) => {
   const navigate = useNavigate();
   const {handleCheckOut} = useContext(OrderContext);
 

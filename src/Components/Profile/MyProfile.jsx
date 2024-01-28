@@ -3,9 +3,13 @@ import style from "./MyProfile.module.css";
 import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../Context/MyContext";
+import { sendSignInLinkToEmail } from "firebase/auth";
+import { auth } from "../../Firebase/Firebase";
 const MyProfile = () => {
   const {Myprofile,setMyprofile,handleConfirm,Categories,setCategories,User} = useContext(UserContext);
   const user = JSON.parse(window.localStorage.getItem("August"));
+  // const [emailVerified,setEmailVerified] =);
+
   const handleSelect = (index) => {
     const datacategory = Categories.map((item, i) => {
       if (i == index) {
@@ -15,6 +19,22 @@ const MyProfile = () => {
     });
     setCategories(datacategory);
   };
+ const handleEmailVerifyProfile =()=>{
+  const actionCodeSettings = {
+    url: 'http://localhost:3000/userprofile',
+    handleCodeInApp: true,
+
+  };
+  sendSignInLinkToEmail(auth,"btech15234.18@bitmesra.ac.in", actionCodeSettings)
+    .then(() => {
+
+      alert("sent email verification link on your email!!")
+      console.log("doneeeeeeee");
+    })
+    .catch((error) => {
+     console.log(error);
+    });
+ }
 
   return (
     <>
@@ -111,11 +131,11 @@ const MyProfile = () => {
             <span className={style.emailheading}>Email</span>
             <br />
             <span className={style.emailpara}>
-              btech15234.18@bitmesra.ac.in
+            {user?.email}
             </span>
           </div>
           <div className={style.emailright}>
-            <a href="#" >{user.emailVerified?"Verified":"Verify"}</a>
+            <span onClick={()=>{!user.emailVerified && handleEmailVerifyProfile()}}>{user.emailVerified?"Verified":"Verify"}</span>
             <a href="#">Change</a>
           </div>
         </div>

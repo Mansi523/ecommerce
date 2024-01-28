@@ -295,47 +295,46 @@ const handleClickedItems =(item)=>{
     setheading(item);
   }
 
-const handleLogOut = ()=>{
-  setLoader(true);
-
-const auth = getAuth();
-
-signOut(auth).then(() => {
-  console.log("signout successfully");
-  // Sign-out successful.
-  setLoader(false);
-  // window.localStorage.removeItem("UserId");
-  window.localStorage.removeItem("August");
-  window.localStorage.removeItem("Ad");
-  toast('Log Out Successfully!',
-  {
-    style: {
-      borderRadius: '10px',
-      background: '#333',
-      color: '#fff',
-    },
-  }
-);
-  window.location.href = '/authenticate'
-}).catch((error) => {
-  // An error happened.
-  // console.log("Something went wrong",error);
-  toast.error('Something went wrong!',
-  {
-    style: {
-      borderRadius: '10px',
-      background: '#333',
-      color: '#fff',
-    },
-  }
-);
-  setLoader(false);
+  const handleLogOut = async () => {
+    setLoader(true);
   
-});
-// window.open("/authenticate","_self");
-  // <Navigate to="/authenticate"/>
-  }
-
+    const auth = getAuth();
+  
+    try {
+      await signOut(auth);
+      console.log("signout successfully");
+  
+      // Remove items from localStorage
+      window.localStorage.removeItem("Ad");
+      window.localStorage.removeItem("August");
+  
+      setLoader(false);
+  
+      toast('Log Out Successfully!', {
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      });
+  
+      // Redirect after successful sign-out and removal of items
+      window.location.href = '/authenticate';
+    } catch (error) {
+      console.error("Error during sign-out", error);
+  
+      toast.error('Something went wrong!', {
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      });
+  
+      setLoader(false);
+    }
+  };
+  
 const handleSaveAddress =async()=>{
   const user = JSON.parse(window.localStorage.getItem("August"));
   const citiesRef = collection(db, "users");
@@ -425,9 +424,21 @@ const getCurrentUser =async()=>{
     
     if (docSnap.exists()) {
       setUser(docSnap.data());
-      setMyprofile({...Myprofile,Name:docSnap.data().name})
+      setMyprofile({ ...Myprofile, Name: docSnap.data().name });
       console.log("Document data:", docSnap.data());
-    } else {
+      console.log("Document data:default", docSnap.data().defaultaddress);
+    
+      // Check if defaultaddress is not an empty object
+      const defaultAddressData = docSnap.data().defaultaddress;
+      if (Object.keys(defaultAddressData).length !== 0) {
+        // Set the data in local storage
+        localStorage.setItem('Ad', true);
+        console.log('Default Address data:', defaultAddressData);
+      } else {
+        console.log('Default Address data is empty. Not storing in local storage.');
+      }
+    }
+     else {
       // docSnap.data() will be undefined in this case
       console.log("No such document!");
     }
