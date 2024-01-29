@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom';
 import {useContext} from 'react'
 import { UserContext,ProductContext} from '../../Context/MyContext';
@@ -12,7 +12,7 @@ import logo from '../../Assets/logo.png';
 
 const Navbar = () => {
   let {currentuser} = useContext(UserContext);
-  const {category,homeEveryMood} = useContext(ProductContext);
+  const {category,homeEveryMood,handleSearch} = useContext(ProductContext);
   const arr=[];
   const handlenavcat =()=>{
     for(let i=0;i<category?.categories?.length;i++){
@@ -24,6 +24,9 @@ const Navbar = () => {
   handlenavcat();
   console.log("CURRENTUSER",currentuser);
   let navigate = useNavigate();
+
+
+
   return (
     <>
      <div className={style.nav}>
@@ -40,7 +43,7 @@ const Navbar = () => {
      </div>
      </div>
      <div className={style.navRight}>
-     <div className={style.icons}><CiSearch fontSize={20}/></div>
+     <div className={style.icons}><CiSearch fontSize={20} onClick={handleSearch}/></div>
     { !currentuser?<Link to='/authenticate'><div className={style.icons}><CiUser fontSize={20}/></div></Link>
      :<Link to='/userprofile'><div className={style.icons}><CiUser fontSize={20}/></div></Link>
     }

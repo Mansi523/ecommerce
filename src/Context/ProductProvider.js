@@ -8,6 +8,8 @@ const ProductProvider = ({children}) => {
     const [topProduct,setTopProduct] = useState([]);
     const [product,setProduct] = useState([]);
     const [size,setSize] = useState(null);
+  const [toggleSearch,setToggleSearch] = useState(false);
+
     const [category,setCategory] = useState({
       categories:[],
       inFocusPhoto:{},
@@ -17,6 +19,12 @@ const ProductProvider = ({children}) => {
       video:[],
     });
 const [filterCategory,setFilterCategory] = useState([]);
+
+const handleSearch=()=>{
+  setToggleSearch(!toggleSearch);
+  console.log(toggleSearch);
+  }
+
 
     useEffect(()=>{
 try{
@@ -82,7 +90,7 @@ const homeBanner = category.homeBanner;
 const homeEveryMood = category.homeEveryMood;
 const video = category.video;
   return (
-   <ProductContext.Provider value={{topProduct,size,setSize,category,filterCategory,inFocusPhoto,inFocusVideo,homeBanner,homeEveryMood,video,product}}>
+   <ProductContext.Provider value={{topProduct,toggleSearch,handleSearch,size,setSize,category,filterCategory,inFocusPhoto,inFocusVideo,homeBanner,homeEveryMood,video,product}}>
     {children}
    </ProductContext.Provider>
   )

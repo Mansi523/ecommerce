@@ -3,6 +3,62 @@
     padding:0;
   
 }
+.scontainer{
+    height:auto;
+    width:100vw;
+    position:fixed;
+    background-color:#fff;
+    top:-10px;
+}
+.scnttop{
+    height:120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sbar input{
+    width:650px;
+    border:none;
+    background-color:#F4F4F4;
+    border-radius:15px;
+    padding:10px;
+    position: relative;
+}
+.sbar button{
+    position: absolute;
+    right:460px;
+    top:45px;
+    border:none;
+}
+.sbar input:focus{
+    outline:none;
+}
+.scancel{
+    position:absolute;
+    right:30px;  
+    top:34px;
+    left:1450px;
+}
+.sctdown{
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+}
+.stopsearch{
+  margin-left:400px;
+  font-size:1rem;
+  font-weight:500;
+  color:#222;
+}
+.stopsearchdown{
+  padding:10px;
+  margin-left:390px; 
+  margin-top:20px; 
+  margin-bottom:40px;
+}
+.stopsearchdown span{
+    font-size:0.8rem;
+    font-weight:400;
+    margin-right:90px;
+}
 .videocls{
     width:100vw;
     height:70%;

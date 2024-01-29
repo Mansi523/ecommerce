@@ -139,7 +139,7 @@ await updateDoc(washingtonRef, {
                 <div className="imageProductDetails">
                   <img
                     src={productDetails?.photo?.url}
-                    alt=""
+                    alt="product"
                   />
                 </div>
               </div>
@@ -154,8 +154,8 @@ await updateDoc(washingtonRef, {
                 <div className="row mt-4 productPrice">
                   <div className="d-flex justify-content-between">
                     <div className="price">
-                      <h4>MRP ₹ {productDetails?.price}</h4>
-                      <p>Inclusive of all taxes</p>
+                      <h4 >MRP ₹ {productDetails?.price}</h4>
+                      <p >Inclusive of all taxes</p>
                     </div>
                     <div className="fav">
                       <span>

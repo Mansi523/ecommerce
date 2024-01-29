@@ -9,8 +9,8 @@
     --ub-font-family:-apple-system,blinkmacsystemfont,"Helvetica Neue",helvetica,segoe ui,arial,roboto,"PingFang SC","miui","Hiragino Sans GB","Microsoft Yahei",sans-serif !important;
 }
 .InFocusBox{
-    margin:80px;
-    /* margin-right:-10px; */
+    margin:120px;
+    margin-left:30px;
     height:1000px;
     width:1000px;
     display:flex;
@@ -23,14 +23,20 @@
     font-size:0.9rem;
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji !important; 
 }
+.infocspanright{
+margin-left:30px !important;
+}
 .InFocusLeft img{
     height:900px;
     width:700px;
+    margin-left:20px  !important;
 }
+
 .InFocusRight video{
     height:900px;
-    width:800px;
+    width:700px !important;
+    margin-left:20px  !important;
 }
 .InFocusRightvideospan{
-    margin-left:147px !important
+    margin-left:25px !important
 }

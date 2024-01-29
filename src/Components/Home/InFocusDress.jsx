@@ -12,7 +12,7 @@ const InFocusDress = () => {
        <div className={style.InFocusBox}>
         <div className={style.InFocusLeft} onClick={()=>navigate(`/category/${inFocusPhoto?.id}`)}>
         <img src={inFocusPhoto?.url} alt="Infocusimg" />
-        <span>{inFocusPhoto?.category} ></span>
+        <span className={style.infocspanright}>{inFocusPhoto?.category} ></span>
         </div>
         <div className={style.InFocusRight}  onClick={()=>navigate(`/category/${inFocusVideo?.id}`)}>
          <video src={inFocusVideo?.url} autoPlay loop muted></video>
