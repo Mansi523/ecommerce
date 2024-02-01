@@ -13,13 +13,25 @@ import FotterBanner from '../../Components/Fotter/FotterBanner';
 import Fotter from '../../Components/Fotter/Fotter';
 import { IoIosSearch } from "react-icons/io";
 import { RxCross1 } from "react-icons/rx";
+import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const {video,handleSearch,toggleSearch,product,category} = useContext(ProductContext);
   const [searchData,setSearchData] = useState("");
   const [checkSearch,setCheckSearch] = useState(true);
   const [dataSearchToBeFetched,setSearchToBeFetched] = useState([]);
-
+  const navigate = useNavigate();
   console.log("Product",product);
+
+  const arr=[];
+  const handlenavCatToSearch =()=>{
+    for(let i=0;i<category?.homeEveryMood?.length;i++){
+      arr.push(category?.homeEveryMood[i]?.id);
+    
+    }
+    console.log("print the array",arr);
+  }
+  handlenavCatToSearch();
+
 
     useEffect(()=>{
       if(searchData.length !== 0){
@@ -71,39 +83,50 @@ setSearchToBeFetched(data);
         <span className={style.scancel}><RxCross1 fontSize={16} onClick={handleSearch}/></span>
       </div>
       <hr/>
-    
-      <div className={style.sctdownsearch}>
- {dataSearchToBeFetched?.slice(1,7).map((s,i)=>(
-  <div className={style.sctdowncont}>
-  <div className={style.sctboxleft}>
-   <div className={style.sctimg}>
- <img height={100} src={s?.photo?.url} alt="image" />
-   </div>
-   </div>
-   <div className={style.sctright}>
-  <div className={style.scttext}>
-   <span className={style.sctprname}>{s.name}</span>
-<span className={style.sctprice}>₹{s.price}</span>
-  </div>
-  </div>
+    {
+      !checkSearch &&  
+        <>
+     
+         <div className={style.sctdownsearch} >
+      {dataSearchToBeFetched?.slice(1,7).map((s,i)=>(
+       <div className={style.sctdowncont} onClick={()=>navigate(`/details/${s?.id}`)}>
+       <div className={style.sctboxleft}>
+        <div className={style.sctimg}>
+      <img height={100} src={s?.photo?.url} alt="image" />
+        </div>
+        </div>
+        <div className={style.sctright}>
+       <div className={style.scttext}>
+        <span className={style.sctprname}>{s.name}</span>
+     <span className={style.sctprice}>₹{s.price}</span>
+       </div>
+       </div>
+     
+     </div>
+      ))}
 
-</div>
- ))}
+     
+           </div>
+           
+     <div className={style.sctv}>
+     <button>View more products</button>
+     </div>
+        </>  
+    }
 
-<div className={style.sctv}>
-<button>View more products</button>
-</div>
-
-      </div>
 {
   checkSearch && 
+  
    <div className={style.sctdown}>
   <div className={style.stopsearch}>
     <span>Top Search</span>
   </div>
 
   <div className={style.stopsearchdown}>
-  <span>Fast delivery⚡️</span>  <span>The Sporty Side</span><span>The Valentines Edit</span><span>All Things Festival</span>
+  <span onClick={()=>navigate('/product')} >Fast delivery⚡️</span> 
+   <span onClick={()=>navigate(`/category/${arr[0]}`)}  >The Sporty Side</span>
+   <span onClick={()=>navigate(`/category/${arr[1]}`)} >The Valentines Edit</span>
+   <span onClick={()=>navigate(`/category/${arr[2]}`)} >All Things Festival</span>
   </div>
 </div>
 }
